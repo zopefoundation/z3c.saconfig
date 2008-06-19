@@ -9,7 +9,7 @@ def session_factory():
     It delegates to a IScopedSession utility.
     """
     utility = component.getUtility(IScopedSession)
-    return utility.session_factory()
+    return utility.sessionFactory()
 
 def scopefunc():
     """This is used by scoped session to distinguish between sessions.
@@ -17,7 +17,7 @@ def scopefunc():
     It delegates to a IScopedSession utility.
     """
     utility = component.getUtility(IScopedSession)
-    return utility.scopefunc()
+    return utility.scopeFunc()
 
 # this is framework central configuration. Use a IScopedSession utility
 # to define behavior.

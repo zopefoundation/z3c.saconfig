@@ -8,14 +8,14 @@ class IScopedSession(Interface):
     to transparently use a different engine and session configuration per
     database.
     """
-    def session_factory():
+    def sessionFactory():
         """Create a SQLAlchemy session.
 
         Typically you'd use sqlalchemy.orm.create_session to create
         the session here.
         """
 
-    def scopefunc():
+    def scopeFunc():
         """Determine the scope of the session.
 
         This can be used to scope the session per thread, per Zope 3 site,
@@ -23,4 +23,48 @@ class IScopedSession(Interface):
         like a thread id, or a tuple with thread id and application id.
         """
 
+class ISiteScopedSession(IScopedSession):
+    """A utility that makes sessions be scoped by site.
+    """
+    def siteScopeFunc():
+        """Returns a unique id per site.
+        """
+
+class IEngineFactory(Interface):
+    """A utility that represents an SQLAlchemy engine.
+
+    If the engine isn't created yet, it will create it. Otherwise the
+    engine will be cached.
+
+    When an engine property is changed, the engine will be recreated
+    dynamically.
+    """
+
+    def __call__():
+        """Get the engine.
+
+        This creates the engine if this factory was not used before,
+        otherwise returns a cached version.
+        """
+
+    def configuration():
+        """Returns the engine configuration in the form of an args, kw tuple.
+
+        Return the parameters used to create an engine as a tuple with
+        an args list and a kw dictionary.
+        """
+
+    def reset():
+        """Reset the cached engine (if any).
+
+        This causes the engine to be recreated on next use.
+        """
+
+    def getCached():
+        """Return the cached engine.
+        """
+
+    def cache(engine):
+        """Cache the engine.
+        """
 

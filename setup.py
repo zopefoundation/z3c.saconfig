@@ -33,6 +33,7 @@ setup(name='z3c.saconfig',
           'zope.sqlalchemy',
           'zope.interface',
           'zope.component',
+          'zope.hookable',
       ],
       entry_points="""
       # -*- Entry points: -*-

@@ -3,11 +3,14 @@ Some reusable, standard implementations of IScopedSession.
 """
 
 import thread
-from zope.interface import implements
 import sqlalchemy
+
+from zope.interface import implements
+from zope import component
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from z3c.saconfig.interfaces import IScopedSession
+from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
+                                     IEngineFactory)
 
 class GloballyScopedSession(object):
     """A globally scoped session.
@@ -36,16 +39,112 @@ class GloballyScopedSession(object):
         Normally you wouldn't pass these in, but if you have the need
         to override them, you could.
         """
-        if 'autocommit' not in kw:
-            kw['autocommit'] = False
-        if 'autoflush' not in kw:
-            kw['autoflush'] = True
-        if 'extension' not in kw:
-            kw['extension'] = ZopeTransactionExtension()
-        self.kw = kw
+        self.kw = _zope_session_defaults(kw)
 
-    def session_factory(self):
-        return sqlalchemy.orm.create_session(**self.kw)
+    def sessionFactory(self):
+        kw = self.kw.copy()
+        if 'bind' not in kw:
+            # look up the engine  using IEngineFactory if needed
+            engine_factory = component.getUtility(IEngineFactory)
+            kw['bind'] = engine_factory()
+        return sqlalchemy.orm.create_session(**kw)
     
-    def scopefunc(self):
+    def scopeFunc(self):
         return thread.get_ident()
+
+def _zope_session_defaults(kw):
+    """Adjust keyword parameters with proper defaults for Zope.
+    """
+    kw = kw.copy()
+    if 'autocommit' not in kw:
+        kw['autocommit'] = False
+    if 'autoflush' not in kw:
+        kw['autoflush'] = True
+    if 'extension' not in kw:
+        kw['extension'] = ZopeTransactionExtension()
+    return kw
+
+class SiteScopedSession(object):
+    """A session that is scoped per site.
+
+    Even though this makes the sessions scoped per site,
+    the utility can be registered globally to make this work.
+    
+    Creation arguments as for GloballyScopedSession, except that no ``bind``
+    parameter should be passed. This means it is possible to create
+    a SiteScopedSession utility without passing parameters to its constructor.
+    """
+    implements(ISiteScopedSession)
+
+    def __init__(self, **kw):
+        assert 'bind' not in kw
+        self.kw = _zope_session_defaults(kw)
+        
+    def sessionFactory(self):
+        engine_factory = component.getUtility(IEngineFactory)
+        kw = self.kw.copy()
+        kw['bind'] = engine_factory()
+        return sqlalchemy.orm.create_session(**kw)
+
+    def scopeFunc(self):
+        return (thread.get_ident(), self.siteScopeFunc())
+
+    def siteScopeFunc(self):
+        raise NotImplementedError
+
+class EngineFactory(object):
+    """An engine factory.
+
+    If you need engine connection parameters to be different per site,
+    EngineFactory should be registered as a local utility in that
+    site.
+
+    convert_unicode is True by default.
+
+    If you want this utility to be persistent, you should subclass it
+    and mixin Persistent. You could then manage the parameters
+    differently than is done in this __init__, for instance as
+    attributes, which is nicer if you are using Persistent (or Zope 3
+    schema). In this case you need to override the configuration method.
+    """
+    implements(IEngineFactory)
+
+    def __init__(self, *args, **kw):
+        if 'convert_unicode' not in kw:
+            kw['convert_unicode'] = True
+        self._args = args
+        self._kw = kw
+        
+    def __call__(self):
+        engine = self.getCached()
+        if engine is not None:
+            return engine
+        # no engine yet, so create a new one
+        args, kw = self.configuration()
+        engine = sqlalchemy.create_engine(*args, **kw)
+        self.cache(engine)
+        return engine
+
+    def configuration(self):
+        """Returns engine parameters.
+
+        This can be overridden in a subclass to retrieve the parameters
+        from some other place.
+        """
+        return self._args, self._kw
+
+    def reset(self):
+        engine = self.getCached()
+        if engine is None:
+            return
+        # XXX is disposing the right thing to do?
+        engine.dispose()
+        self.cache(None)
+
+    # XXX what happens if EngineFactory were to be evicted from the ZODB
+    # cache?
+    def getCached(self):
+        return getattr(self, '_v_engine', None)
+
+    def cache(self, engine):
+        self._v_engine = engine
