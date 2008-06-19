@@ -31,13 +31,10 @@ class ISiteScopedSession(IScopedSession):
         """
 
 class IEngineFactory(Interface):
-    """A utility that represents an SQLAlchemy engine.
+    """A utility that maintains an SQLAlchemy engine.
 
     If the engine isn't created yet, it will create it. Otherwise the
     engine will be cached.
-
-    When an engine property is changed, the engine will be recreated
-    dynamically.
     """
 
     def __call__():
