@@ -242,25 +242,3 @@ And ``bob`` is still in ``site1``::
   1
   >>> users[0].name
   u'bob'
-
-Running the tests
-=================
-
-This package can be checked out from
-svn://svn.zope.org/repos/main. You can then execute the buildout to
-download and install the requirements and install the test
-runner. Using your desired python run:
-
-$ python bootstrap.py
-
-This will download the dependent packages and setup the test script, which may
-be run with:
-
-$ bin/test
-
-To enable testing with your own database set the TEST_DSN environment
-variable to your sqlalchemy database dsn. Two-phase commit behaviour
-may be tested by setting the TEST_TWOPHASE variable to a non empty
-string. e.g:
-
-$ TEST_DSN=postgres://test:test@localhost/test TEST_TWOPHASE=True bin/test
