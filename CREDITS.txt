@@ -1,0 +1,9 @@
+z3c.saconfig credits
+====================
+
+* Martijn Faassen (creator)
+
+* Hermann Himmelbauer (inspired the engine factory code)
+
+* Laurence Rowe, Brian Sutherland, Martin Aspeli, Michael Bayer
+  (useful design discussions)
