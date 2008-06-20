@@ -130,7 +130,7 @@ Now things go the usual ``zope.sqlalchemy`` way, which is like
   >>> session.query(User).all()
   []    
   >>> import transaction
-  >>> session.save(User(name='bob'))
+  >>> session.add(User(name='bob'))
   >>> transaction.commit()
 
   >>> session = Session()
@@ -225,7 +225,7 @@ The database is still empty::
 
 We'll add something to this database now::
 
-  >>> session.save(User(name='bob'))
+  >>> session.add(User(name='bob'))
   >>> transaction.commit()
 
 ``bob`` is now there::
@@ -247,7 +247,7 @@ different database, which should still be empty::
   
 We'll add ``fred`` to this database::
 
-  >>> session.save(User(name='fred'))
+  >>> session.add(User(name='fred'))
   >>> transaction.commit()
 
 Now ``fred`` is indeed there::
