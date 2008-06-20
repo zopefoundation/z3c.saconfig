@@ -95,8 +95,20 @@ We now register this as an ``IScopedSession`` utility::
 We are done with configuration now. As you have seen it involves
 setting up two utilities, ``IEngineFactory`` and ``IScopedSession``,
 where only the latter is really needed in this globally shared session
-use case. We can now use the ``Session`` object create a session which
-will behave according to the utility we provided::
+use case. 
+
+After the ``IScopedSession`` utility is registered, one can import the
+``Session`` class from z3c.saconfig.  This ``Session`` class is like
+the one you'd produce with ``sessionmaker`` from
+SQLAlchemy. `z3c.saconfig.Session`` is intended to be the only
+``Session`` class you'll ever need, as all configuration and Zope
+integration is done automatically for you by ``z3c.saconfig``,
+appropriate the context in Zope where you use it. There is no need to
+create ``Session`` classes yourself with ``sessionmaker`` or
+``scoped_sesion`` anymore.
+
+We can now use the ``Session`` class to create a session which will
+behave according to the utility we provided::
 
   >>> from z3c.saconfig import Session
   >>> session = Session()
