@@ -265,3 +265,40 @@ And ``bob`` is still in ``site1``::
   1
   >>> users[0].name
   u'bob'
+
+Engines and Threading
+=====================
+
+  >>> engine = None
+  >>> def setEngine():
+  ...     global engine
+  ...     engine = engine_factory1()
+
+Engine factories must produce the same engine:
+ 
+  >>> setEngine()
+  >>> engine is engine_factory1()
+  True
+
+Even if you call it in a different thread:
+
+  >>> import threading
+  >>> engine = None
+  >>> t = threading.Thread(target=setEngine)
+  >>> t.start()
+  >>> t.join()
+
+  >>> engine is engine_factory1()
+  True
+
+Unless they are reset:
+  
+  >>> engine_factory1.reset()
+  >>> engine is engine_factory1()
+  False
+
+Even engine factories with the same parameters created at (almost) the same
+time should produce different engines:
+
+  >>> EngineFactory(TEST_DSN1)() is EngineFactory(TEST_DSN1)()
+  False

@@ -2,7 +2,9 @@
 Some reusable, standard implementations of IScopedSession.
 """
 
+import time
 import thread
+import threading
 import sqlalchemy
 
 from zope.interface import implements
@@ -92,6 +94,13 @@ class SiteScopedSession(object):
     def siteScopeFunc(self):
         raise NotImplementedError
 
+# Credits: This method of storing engines lifted from zope.app.cache.ram
+_COUNTER = 0
+_COUNTER_LOCK = threading.Lock()
+
+_ENGINES = {}
+_ENGINES_LOCK = threading.Lock()
+
 class EngineFactory(object):
     """An engine factory.
 
@@ -114,16 +123,33 @@ class EngineFactory(object):
             kw['convert_unicode'] = True
         self._args = args
         self._kw = kw
-        
+        self._key = self._getKey()
+
+    def _getKey(self):
+        """Get a unique key"""
+        global _COUNTER
+        _COUNTER_LOCK.acquire()
+        try:
+            _COUNTER += 1
+            return  "%s_%f_%d" % (id(self), time.time(), _COUNTER)
+        finally:
+            _COUNTER_LOCK.release()
+    
     def __call__(self):
-        engine = self.getCached()
+        # optimistically try get without lock
+        engine = _ENGINES.get(self._key, None)
         if engine is not None:
             return engine
-        # no engine yet, so create a new one
-        args, kw = self.configuration()
-        engine = sqlalchemy.create_engine(*args, **kw)
-        self.cache(engine)
-        return engine
+        # no engine, lock and redo
+        _ENGINES_LOCK.acquire()
+        try:
+            # need to check, another thread may have got there first
+            if self._key not in _ENGINES:
+                args, kw = self.configuration()
+                _ENGINES[self._key] = sqlalchemy.create_engine(*args, **kw)
+            return _ENGINES[self._key]
+        finally:
+            _ENGINES_LOCK.release()
 
     def configuration(self):
         """Returns engine parameters.
@@ -134,17 +160,12 @@ class EngineFactory(object):
         return self._args, self._kw
 
     def reset(self):
-        engine = self.getCached()
-        if engine is None:
-            return
-        # XXX is disposing the right thing to do?
-        engine.dispose()
-        self.cache(None)
-
-    # XXX what happens if EngineFactory were to be evicted from the ZODB
-    # cache?
-    def getCached(self):
-        return getattr(self, '_v_engine', None)
-
-    def cache(self, engine):
-        self._v_engine = engine
+        _ENGINES_LOCK.acquire()
+        try:
+            if self._key not in _ENGINES:
+                return
+            # XXX is disposing the right thing to do?
+            _ENGINES[self._key].dispose()
+            del _ENGINES[self._key]
+        finally:
+            _ENGINES_LOCK.release()

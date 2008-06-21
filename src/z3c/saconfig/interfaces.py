@@ -56,12 +56,3 @@ class IEngineFactory(Interface):
 
         This causes the engine to be recreated on next use.
         """
-
-    def getCached():
-        """Return the cached engine.
-        """
-
-    def cache(engine):
-        """Cache the engine.
-        """
-
