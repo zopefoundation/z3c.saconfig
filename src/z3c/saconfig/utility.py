@@ -14,6 +14,19 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
                                      IEngineFactory)
 
+SA_0_5 = sqlalchemy.__version__.split('.')[:2] == ['0', '5']
+
+if SA_0_5:
+    SESSION_DEFAULTS = dict(
+        autocommit=False,
+        autoflush=True,
+        extension=ZopeTransactionExtension())
+else:
+    SESSION_DEFAULTS = dict(
+        autoflush=True,
+        transactional=True,
+        extension=ZopeTransactionExtension())
+
 class GloballyScopedSession(object):
     """A globally scoped session.
 
@@ -57,13 +70,11 @@ class GloballyScopedSession(object):
 def _zope_session_defaults(kw):
     """Adjust keyword parameters with proper defaults for Zope.
     """
+
     kw = kw.copy()
-    if 'autocommit' not in kw:
-        kw['autocommit'] = False
-    if 'autoflush' not in kw:
-        kw['autoflush'] = True
-    if 'extension' not in kw:
-        kw['extension'] = ZopeTransactionExtension()
+    kw.update(dict((key, default) for key, default in SESSION_DEFAULTS.items() \
+                   if key not in kw))
+
     return kw
 
 class SiteScopedSession(object):
