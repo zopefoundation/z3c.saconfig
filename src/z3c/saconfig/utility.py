@@ -71,11 +71,10 @@ def _zope_session_defaults(kw):
     """Adjust keyword parameters with proper defaults for Zope.
     """
 
-    kw = kw.copy()
-    kw.update(dict((key, default) for key, default in SESSION_DEFAULTS.items() \
-                   if key not in kw))
+    d = SESSION_DEFAULTS.copy()
+    d.update(kw)
 
-    return kw
+    return d
 
 class SiteScopedSession(object):
     """A session that is scoped per site.
