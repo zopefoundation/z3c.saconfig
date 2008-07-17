@@ -302,3 +302,25 @@ time should produce different engines:
 
   >>> EngineFactory(TEST_DSN1)() is EngineFactory(TEST_DSN1)()
   False
+
+Configuration using ZCML
+========================
+
+A configuration directive is provided to register a database engine
+factory using ZCML.
+
+  >>> from cStringIO import StringIO
+  >>> from zope.configuration import xmlconfig
+  >>> import z3c.saconfig
+  >>> xmlconfig.XMLConfig('meta.zcml', z3c.saconfig)()
+
+Let's try registering the directory again.
+
+  >>> xmlconfig.xmlconfig(StringIO("""
+  ... <configure xmlns="http://namespaces.zope.org/db">
+  ...   <engine name="dummy" url="sqlite:///:memory:" />
+  ... </configure>"""))
+
+  >>> component.getUtility(IEngineFactory, name="dummy")
+  <z3c.saconfig.utility.EngineFactory object at ...>
+

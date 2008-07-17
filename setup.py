@@ -34,6 +34,8 @@ setup(name='z3c.saconfig',
           'zope.interface',
           'zope.component',
           'zope.hookable',
+          'zope.security',
+          'zope.configuration',
       ],
       entry_points="""
       # -*- Entry points: -*-
