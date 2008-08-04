@@ -14,7 +14,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
                                      IEngineFactory)
 
-SA_0_5 = sqlalchemy.__version__.split('.')[:2] == ['0', '5']
+SA_0_5 = sqlalchemy.__version__ == 'svn' or sqlalchemy.__version__.split('.')[:2] == ['0', '5']
 
 if SA_0_5:
     SESSION_DEFAULTS = dict(
