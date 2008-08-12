@@ -324,3 +324,27 @@ Let's try registering the directory again.
   >>> component.getUtility(IEngineFactory, name="dummy")
   <z3c.saconfig.utility.EngineFactory object at ...>
 
+This time with a setup call.
+
+  >>> xmlconfig.xmlconfig(StringIO("""
+  ... <configure xmlns="http://namespaces.zope.org/db">
+  ...   <engine name="dummy2" url="sqlite:///:memory:"
+  ...           setup="z3c.saconfig.tests.engine_subscriber" />
+  ... </configure>"""))
+  got: Engine(sqlite:///:memory:)
+
+The session directive is provided to register a scoped session utility:
+
+  >>> xmlconfig.xmlconfig(StringIO("""
+  ... <configure xmlns="http://namespaces.zope.org/db">
+  ...   <session name="dummy" engine="dummy2" />
+  ... </configure>"""))
+
+  >>> component.getUtility(IScopedSession, name="dummy")
+  <z3c.saconfig.utility.GloballyScopedSession object at ...>
+
+  >>> from z3c.saconfig import named_scoped_session
+  >>> factory = component.getUtility(IEngineFactory, name="dummy2")
+  >>> Session = named_scoped_session('dummy')
+  >>> Session().bind is factory()
+  True

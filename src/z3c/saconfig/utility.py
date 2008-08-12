@@ -39,10 +39,13 @@ class GloballyScopedSession(object):
     to pass the right arguments to the superclasses __init__.
     """
     implements(IScopedSession)
-
-    def __init__(self, **kw):
+    
+    def __init__(self, engine=u'', **kw):
         """Pass keywords arguments for sqlalchemy.orm.create_session.
 
+        The `engine` argument is the name of a utility implementing
+        IEngineFactory.
+        
         Note that GloballyScopedSesssion does have different defaults than
         ``create_session`` for various parameters where it makes sense
         for Zope integration, namely:
@@ -54,13 +57,14 @@ class GloballyScopedSession(object):
         Normally you wouldn't pass these in, but if you have the need
         to override them, you could.
         """
+        self.engine = engine
         self.kw = _zope_session_defaults(kw)
 
     def sessionFactory(self):
         kw = self.kw.copy()
         if 'bind' not in kw:
-            # look up the engine  using IEngineFactory if needed
-            engine_factory = component.getUtility(IEngineFactory)
+            engine_factory = component.getUtility(IEngineFactory,
+                                                  name=self.engine)
             kw['bind'] = engine_factory()
         return sqlalchemy.orm.create_session(**kw)
     
@@ -87,13 +91,15 @@ class SiteScopedSession(object):
     a SiteScopedSession utility without passing parameters to its constructor.
     """
     implements(ISiteScopedSession)
-
-    def __init__(self, **kw):
+    
+    def __init__(self, engine=u'', **kw):
         assert 'bind' not in kw
+        self.engine = engine
         self.kw = _zope_session_defaults(kw)
         
     def sessionFactory(self):
-        engine_factory = component.getUtility(IEngineFactory)
+        engine_factory = component.getUtility(IEngineFactory,
+                                              name=self.engine)
         kw = self.kw.copy()
         kw['bind'] = engine_factory()
         return sqlalchemy.orm.create_session(**kw)

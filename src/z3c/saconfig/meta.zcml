@@ -12,6 +12,12 @@
        handler=".zcml.engine"
        />
 
+    <meta:directive
+       name="session"
+       schema=".zcml.ISessionDirective"
+       handler=".zcml.session"
+       />
+
   </meta:directives>
 
 </configure>

@@ -89,7 +89,10 @@ def resetHooks():
 
 # make sure hooks get cleaned up after tests are run
 addCleanUp(resetHooks)
-    
+
+def engine_subscriber(engine):
+    print "got: %s " % engine
+
 def test_suite():
     optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
     globs = {
