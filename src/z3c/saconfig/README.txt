@@ -253,7 +253,10 @@ We'll add ``fred`` to this database::
 Now ``fred`` is indeed there::
  
   >>> session = Session()
-  >>> session.query(User).all()[0].name
+  >>> users = session.query(User).all()
+  >>> len(users)
+  1
+  >>> users[0].name
   u'fred'
 
 And ``bob`` is still in ``site1``::
