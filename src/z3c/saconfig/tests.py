@@ -22,6 +22,7 @@ from zope.testing.cleanup import addCleanUp
 
 from zope import component
 from zope.component import registry
+import zope.component.eventtesting
 
 TEST_TWOPHASE = bool(os.environ.get('TEST_TWOPHASE'))
 TEST_DSN = os.environ.get('TEST_DSN', 'sqlite:///:memory:')
@@ -33,6 +34,8 @@ TEST_DSN2 = os.environ.get('TEST_DSN', TEST_DSN1)
 def setUpReadMe(test):
     # set up special local component architecture
     setHooks()
+    # set up event handling
+    zope.component.eventtesting.setUp(test)
 
 def tearDownReadMe(test):
     # clean up Zope

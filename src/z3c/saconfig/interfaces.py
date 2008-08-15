@@ -1,4 +1,4 @@
-from zope.interface import Interface
+from zope.interface import Interface, implements, Attribute
 
 class IScopedSession(Interface):
     """A utility that plugs into SQLAlchemy's scoped session machinery.
@@ -56,3 +56,17 @@ class IEngineFactory(Interface):
 
         This causes the engine to be recreated on next use.
         """
+
+class IEngineCreatedEvent(Interface):
+    """An SQLAlchemy engine has been created.
+
+    Hook into this event to do setup that can only be performed with
+    an active engine.
+    """
+    engine = Attribute("The engine that was just created.")
+    
+class EngineCreatedEvent(object):
+    implements(IEngineCreatedEvent)
+
+    def __init__(self, engine):
+        self.engine = engine

@@ -140,6 +140,29 @@ Now things go the usual ``zope.sqlalchemy`` way, which is like
   >>> bob.addresses
   []
 
+Events
+======
+
+When a new engine is created by an ``EngineFactory``, an
+``IEngineCreatedEvent`` is fired. This event has an attribute
+``engine`` that contains the engine that was just created::
+
+  >>> from z3c.saconfig.interfaces import IEngineCreatedEvent
+  >>> @component.adapter(IEngineCreatedEvent)
+  ... def createdHandler(event):
+  ...     print "created engine"
+  >>> component.provideHandler(createdHandler)
+  >>> event_engine_factory = EngineFactory(TEST_DSN1)
+  >>> engine = event_engine_factory()
+  created engine
+
+Let's get rid of the event handler again::
+
+  >>> sm = component.getSiteManager()
+  >>> sm.unregisterHandler(None, 
+  ...   required=[IEngineCreatedEvent])
+  True
+
 SiteScopedSession (one database per site)
 =========================================
 

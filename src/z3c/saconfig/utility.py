@@ -10,9 +10,10 @@ import sqlalchemy
 from zope.interface import implements
 from zope import component
 from zope.sqlalchemy import ZopeTransactionExtension
+from zope.event import notify
 
 from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
-                                     IEngineFactory)
+                                     IEngineFactory, EngineCreatedEvent)
 
 SA_0_5 = sqlalchemy.__version__ == 'svn' or sqlalchemy.__version__.split('.')[:2] == ['0', '5']
 
@@ -162,7 +163,9 @@ class EngineFactory(object):
             # need to check, another thread may have got there first
             if self._key not in _ENGINES:
                 args, kw = self.configuration()
-                _ENGINES[self._key] = sqlalchemy.create_engine(*args, **kw)
+                _ENGINES[self._key] = engine = sqlalchemy.create_engine(
+                    *args, **kw)
+                notify(EngineCreatedEvent(engine))
             return _ENGINES[self._key]
         finally:
             _ENGINES_LOCK.release()

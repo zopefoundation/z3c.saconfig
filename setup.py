@@ -35,6 +35,7 @@ setup(name='z3c.saconfig',
           'zope.component',
           'zope.hookable',
           'zope.security',
+          'zope.event',
           'zope.configuration',
       ],
       entry_points="""
