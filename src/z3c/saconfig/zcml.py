@@ -1,7 +1,7 @@
 import zope.interface
 import zope.schema
 import zope.component.zcml
-import zope.dottedname.resolve
+from zope.configuration.name import resolve
 
 import utility
 import interfaces
@@ -26,7 +26,7 @@ class IEngineDirective(zope.interface.Interface):
         required=False,
         default=False)
 
-    setup = zope.schema.DottedName(
+    setup = zope.schema.BytesLine(
         title=u'After engine creation hook',
         description=u'Callback for creating mappers etc. One argument is passed, the engine',
         required=False,
@@ -72,12 +72,18 @@ def engine(_context, url, name=u"", echo=False, setup=None, twophase=False):
         name=name)
     
     if setup:
-        callback = zope.dottedname.resolve.resolve(setup)
+        if _context.package is None:
+            callback = resolve(setup)
+        else:
+            callback = resolve(setup, package=_context.package.__name__)
         callback(factory())
 
 def session(_context, name=u"", engine=u"", twophase=False,
             factory="z3c.saconfig.utility.GloballyScopedSession"):
-    ScopedSession = zope.dottedname.resolve.resolve(factory)
+    if _context.package is None:
+        ScopedSession = resolve(factory)
+    else:
+        ScopedSession = resolve(factory, package=_context.package.__name__)
     scoped_session = ScopedSession(engine=engine, twophase=twophase)
 
     zope.component.zcml.utility(

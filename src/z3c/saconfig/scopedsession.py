@@ -23,7 +23,7 @@ def scopefunc(name=u''):
 # to define behavior.
 Session = scoped_session(session_factory, scopefunc)
 
-_named_scoped_sessions = {}
+_named_scoped_sessions = {u'': Session}
 
 def named_scoped_session(name):
     try:
