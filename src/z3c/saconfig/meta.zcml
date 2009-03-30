@@ -18,6 +18,12 @@
        handler=".zcml.session"
        />
 
+    <meta:directive
+       name="installSessions"
+       schema="zope.interface.Interface"
+       handler=".zcml.install_sessions"
+       />
+
   </meta:directives>
 
 </configure>

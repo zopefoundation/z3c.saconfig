@@ -32,3 +32,7 @@ def named_scoped_session(name):
         return _named_scoped_sessions.setdefault(name,
                             scoped_session(lambda:session_factory(name),
                                            lambda:scopefunc(name)))
+
+def install_sessions():
+    from zope.sqlalchemy import install_sessions
+    install_sessions(_named_scoped_sessions)
