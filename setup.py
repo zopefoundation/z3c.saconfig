@@ -30,7 +30,7 @@ setup(name='z3c.saconfig',
       install_requires=[
           # -*- Extra requirements: -*-
           'setuptools',
-          'zope.sqlalchemy>=0.3',
+          'zope.sqlalchemy>=0.5dev,==dev',
           'zope.interface',
           'zope.component',
           'zope.hookable',

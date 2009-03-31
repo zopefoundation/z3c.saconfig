@@ -390,7 +390,7 @@ The session directive is provided to register a scoped session utility:
 We can setup the zope.sqlalchemy sessions using the installSessions directive
 (making sure we clean up before testing this):
  
-  >>> from zope.sqlalchemy import Session, clear_sessions
+  >>> from zope.sqlalchemy import Session, clear_sessions, named_session
 
   >>> clear_sessions()
   >>> session = Session()
@@ -400,10 +400,19 @@ We can setup the zope.sqlalchemy sessions using the installSessions directive
 
   >>> xmlconfig.xmlconfig(StringIO("""
   ... <configure xmlns="http://namespaces.zope.org/db">
+  ...   <session name="dummy2" engine="dummy2" />
   ...   <installSessions/>
   ... </configure>"""))
 
   >>> session = Session()
+
+This fails:
+
+  >>> session = named_session('dummy2')
+
+Because until this is called the named scoped session is not in the dict
+
+  >>> session = named_scoped_session('dummy2')
 
 CleanUp:
 
