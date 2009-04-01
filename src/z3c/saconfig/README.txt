@@ -180,7 +180,7 @@ SiteScopedSession (one database per site)
 
 In the example above we have set up SQLAlchemy with Zope using
 utilities, but it did not gain us very much, except that you can just
-use ``z3c.saconfig.Session`` to get the correct session.
+use ``zope.sqlalchemy.Session`` to get the correct session.
 
 Now we'll see how we can set up different engines per site by
 registering the engine factory as a local utility for each one.

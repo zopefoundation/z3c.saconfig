@@ -33,6 +33,14 @@ def named_scoped_session(name):
                             scoped_session(lambda:session_factory(name),
                                            lambda:scopefunc(name)))
 
+class _NamedScopedSessionDict:
+
+    def __getitem__(self, name):
+        return named_scoped_session(name)
+
+    def __setitem__(self, name, session):
+        _named_scoped_sessions[name] = session
+
 def install_sessions():
     from zope.sqlalchemy import install_sessions
-    install_sessions(_named_scoped_sessions)
+    install_sessions(_NamedScopedSessionDict())
