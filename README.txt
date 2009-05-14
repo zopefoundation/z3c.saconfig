@@ -2,4 +2,4 @@
  zope.sqlalchemy
 =================
 
-Zope/SQLAlchemy transaction integration. See src/zope/sqlalchemy/README.txt.
+Zope/SQLAlchemy transaction integration. See src/z3c/saconfig/README.txt.
