@@ -133,7 +133,7 @@ create ``Session`` classes yourself with ``sessionmaker`` or
 We can now use the ``Session`` class to create a session which will
 behave according to the utility we provided::
 
-  >>> from zope.sqlalchemy import Session
+  >>> from z3c.saconfig import Session
   >>> session = Session()
 
 Now things go the usual ``zope.sqlalchemy`` way, which is like
