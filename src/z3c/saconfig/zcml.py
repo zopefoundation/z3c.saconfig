@@ -27,12 +27,30 @@ class IEngineDirective(zope.interface.Interface):
         required=False,
         default=False)
 
+    pool_size = zope.schema.Integer(
+        title=u"Pool size",
+        description=u"Number of connections to keep open inside the connection pool.",
+        required=False,
+        default=5)
+        
+    pool_recycle = zope.schema.Integer(
+        title=u"Pool recycle",
+        description=u"Recycle connections after the given number of seconds have passed.",
+        required=False,
+        default=-1)
+
+    pool_timeout = zope.schema.Integer(
+        title=u"Pool timeout",
+        description=u"Number of seconds to wait before giving up on getting a connection from the pool.",
+        required=False,
+        default=30)
+    
     setup = zope.schema.BytesLine(
         title=u'After engine creation hook',
         description=u'Callback for creating mappers etc. One argument is passed, the engine',
         required=False,
         default=None)
-
+    
 
 class ISessionDirective(zope.interface.Interface):
     """Registers a database scoped session"""
@@ -62,8 +80,11 @@ class ISessionDirective(zope.interface.Interface):
         default="z3c.saconfig.utility.GloballyScopedSession")
 
 
-def engine(_context, url, name=u"", echo=False, setup=None, twophase=False):
-    factory = utility.EngineFactory(url, echo=echo)
+def engine(_context, url, name=u"", echo=False, setup=None, twophase=False,
+           pool_size=5, pool_recycle=-1, pool_timeout=30):
+    factory = utility.EngineFactory(
+        url, echo=echo, pool_size=pool_size,
+        pool_recycle=pool_recycle, pool_timeout=pool_timeout)
     
     zope.component.zcml.utility(
         _context,
