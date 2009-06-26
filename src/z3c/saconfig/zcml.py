@@ -27,19 +27,19 @@ class IEngineDirective(zope.interface.Interface):
         required=False,
         default=False)
 
-    pool_size = zope.schema.Integer(
+    pool_size = zope.schema.Int(
         title=u"Pool size",
         description=u"Number of connections to keep open inside the connection pool.",
         required=False,
         default=5)
         
-    pool_recycle = zope.schema.Integer(
+    pool_recycle = zope.schema.Int(
         title=u"Pool recycle",
         description=u"Recycle connections after the given number of seconds have passed.",
         required=False,
         default=-1)
 
-    pool_timeout = zope.schema.Integer(
+    pool_timeout = zope.schema.Int(
         title=u"Pool timeout",
         description=u"Number of seconds to wait before giving up on getting a connection from the pool.",
         required=False,
