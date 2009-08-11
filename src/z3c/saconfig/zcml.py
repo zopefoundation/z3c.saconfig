@@ -5,7 +5,6 @@ from zope.configuration.name import resolve
 
 import utility
 import interfaces
-from z3c.saconfig import scopedsession
 
 class IEngineDirective(zope.interface.Interface):
     """Registers a database engine factory."""
@@ -103,7 +102,3 @@ def session(_context, name=u"", engine=u"", twophase=False,
         component=scoped_session,
         permission=zope.component.zcml.PublicPermission,
         name=name)
-
-def install_sessions(_context):
-    _context.action(discriminator=('installSessions'),
-                    callable=scopedsession.install_sessions)

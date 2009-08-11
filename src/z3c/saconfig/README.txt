@@ -20,18 +20,6 @@ This package does not provide facilities to allow multiple databases
 in a single site; if you want more than one database in your Zope 3
 instance, you will need to set up different sites.
 
-Integration into zope.sqlalchemy
-================================
-
-We can install z3c.salchemy into zope.sqlalchemy to tell zope.sqlalchemy to use
-our implementation of sessions:
-
-  >>> from z3c.saconfig import scopedsession
-  >>> scopedsession.install_sessions()
-
-This can also be done via the "installSessions" zcml directive. It is important
-that this be only done during application setup.
-
 GloballyScopedSession (one database per Zope 3 instance)
 ========================================================
 
@@ -384,34 +372,3 @@ The session directive is provided to register a scoped session utility:
   >>> Session = named_scoped_session('dummy')
   >>> Session().bind is factory()
   True
-
-We can setup the zope.sqlalchemy sessions using the installSessions directive
-(making sure we clean up before testing this):
- 
-  >>> from zope.sqlalchemy import Session, clear_sessions, named_session
-
-  >>> clear_sessions()
-  >>> session = Session()
-  Traceback (most recent call last):
-    ...
-  KeyError: ''
-
-  >>> xmlconfig.xmlconfig(StringIO("""
-  ... <configure xmlns="http://namespaces.zope.org/db">
-  ...   <session name="dummy2" engine="dummy2" />
-  ...   <installSessions/>
-  ... </configure>"""))
-
-  >>> session = Session()
-
-This fails:
-
-  >>> session = named_session('dummy2')
-
-Because until this is called the named scoped session is not in the dict
-
-  >>> session = named_scoped_session('dummy2')
-
-CleanUp:
-
-  >>> clear_sessions()
