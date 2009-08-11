@@ -68,9 +68,7 @@ utility makes sure an engine is created and cached for us.
   >>> engine_factory = EngineFactory(TEST_DSN)
 
 You can pass the parameters you'd normally pass to
-``sqlalchemy.create_engine`` to ``EngineFactory``. Note that
-``z3c.saconfig`` assumes ``convert_unicode`` to be ``True`` by
-default.
+``sqlalchemy.create_engine`` to ``EngineFactory``. 
 
 We now register the engine factory as a global utility using
 ``zope.component``. Normally you'd use either ZCML or Grok to do this

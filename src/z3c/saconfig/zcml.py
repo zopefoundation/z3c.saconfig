@@ -21,6 +21,15 @@ class IEngineDirective(zope.interface.Interface):
         required=False,
         default=u"")
 
+    convert_unicode = zope.schema.Bool(
+        title=u'Convert all string columns to unicode',
+        description=u'This setting makes the SQLAlchemy String column type '
+                    u'equivalent to UnicodeString. Do not use this unless '
+                    u'there is a good reason not to use standard '
+                    u'UnicodeString columns',
+        required=False,
+        default=False)
+    
     echo = zope.schema.Bool(
         title=u'Echo SQL statements',
         description=u'Enable logging statements for debugging.',
@@ -62,9 +71,9 @@ class ISessionDirective(zope.interface.Interface):
         default="z3c.saconfig.utility.GloballyScopedSession")
 
 
-def engine(_context, url, name=u"", echo=False, setup=None, twophase=False):
+def engine(_context, url, name=u"", convert_unicode=False, echo=False, setup=None, twophase=False):
     factory = utility.EngineFactory(
-        url, echo=echo)
+        url, echo=echo, convert_unicode=convert_unicode)
     
     zope.component.zcml.utility(
         _context,

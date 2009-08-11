@@ -125,8 +125,6 @@ class EngineFactory(object):
     EngineFactory should be registered as a local utility in that
     site.
 
-    convert_unicode is True by default.
-
     If you want this utility to be persistent, you should subclass it
     and mixin Persistent. You could then manage the parameters
     differently than is done in this __init__, for instance as
@@ -136,8 +134,6 @@ class EngineFactory(object):
     implements(IEngineFactory)
 
     def __init__(self, *args, **kw):
-        if 'convert_unicode' not in kw:
-            kw['convert_unicode'] = True
         self._args = args
         self._kw = kw
         self._key = self._getKey()
