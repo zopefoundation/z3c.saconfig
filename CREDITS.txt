@@ -5,5 +5,8 @@ z3c.saconfig credits
 
 * Hermann Himmelbauer (inspired the engine factory code)
 
-* Laurence Rowe, Brian Sutherland, Martin Aspeli, Michael Bayer
-  (useful design discussions)
+* Brian Sutherland (various contributions)
+
+* Laurence Rowe, Martin Aspeli, Michael Bayer (useful design discussions)
+
+  
