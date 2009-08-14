@@ -7,7 +7,7 @@ def read(*rnames):
 long_description = ""
 
 setup(name='z3c.saconfig',
-      version='0.9dev',
+      version = '0.9',
       description="Minimal SQLAlchemy ORM session configuration for Zope",
       long_description=long_description,
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
