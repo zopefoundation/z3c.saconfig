@@ -1,13 +1,14 @@
 z3c.saconfig
 ************
 
-0.10 (unreleased)
-=================
+0.9.1 (unreleased)
+==================
 
-- Nothing changed yet.
+- Include documentation on PyPI.
 
+- Small documentation tweaks.
 
 0.9 (2009-08-14)
 ================
 
-* Initial public release.
+- Initial public release.

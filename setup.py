@@ -4,10 +4,10 @@ import sys, os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-long_description = ""
+long_description = read('src/z3c/saconfig/README.txt') + '\n' + read('CHANGES.txt')
 
 setup(name='z3c.saconfig',
-      version = '0.10dev',
+      version = '0.9.1dev',
       description="Minimal SQLAlchemy ORM session configuration for Zope",
       long_description=long_description,
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers

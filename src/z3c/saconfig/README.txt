@@ -5,23 +5,19 @@ Introduction
 ============
 
 This aim of this package is to offer a simple but flexible way to
-configure SQLAlchemy's scoped session support using the Zope 3
-component architecture. This package is based on ``zope.sqlalchemy``, which
+configure SQLAlchemy's scoped session support using the Zope component
+architecture. This package is based on ``zope.sqlalchemy``, which
 offers transaction integration between Zope and SQLAlchemy.
 
 We sketch out two main scenarios here:
 
-* one database per Zope 3 instance.
+* one database per Zope instance.
 
-* one database per site (or Grok application) in a Zope 3 instance
-  (and thus multiple databases per Zope 3 instance).
+* one database per site (or Grok application) in a Zope instance
+  (and thus multiple databases per Zope instance).
 
-This package does not provide facilities to allow multiple databases
-in a single site; if you want more than one database in your Zope 3
-instance, you will need to set up different sites.
-
-GloballyScopedSession (one database per Zope 3 instance)
-========================================================
+GloballyScopedSession (one database per Zope instance)
+======================================================
 
 The simplest way to set up SQLAlchemy for Zope is to have a single
 thread-scoped session that's global to your entire Zope
