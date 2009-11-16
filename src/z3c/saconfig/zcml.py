@@ -33,7 +33,7 @@ class IEngineDirective(zope.interface.Interface):
         title=u'Echo SQL statements',
         description=u'Enable logging statements for debugging.',
         required=False,
-        default=False)
+        default=None)
     
     setup = zope.schema.BytesLine(
         title=u'After engine creation hook',
@@ -70,7 +70,7 @@ class ISessionDirective(zope.interface.Interface):
         default="z3c.saconfig.utility.GloballyScopedSession")
 
 
-def engine(_context, url, name=u"", convert_unicode=False, echo=False, setup=None, twophase=False):
+def engine(_context, url, name=u"", convert_unicode=False, echo=None, setup=None, twophase=False):
     factory = utility.EngineFactory(
         url, echo=echo, convert_unicode=convert_unicode)
     
