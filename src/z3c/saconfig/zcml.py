@@ -1,6 +1,11 @@
 import zope.interface
 import zope.schema
 import zope.component.zcml
+try:
+    from zope.component.security import PublicPermission
+except ImportError:
+    # BBB for Zope 2.10
+    from zope.component.zcml import PublicPermission
 from zope.configuration.name import resolve
 
 import utility
@@ -78,7 +83,7 @@ def engine(_context, url, name=u"", convert_unicode=False, echo=None, setup=None
         _context,
         provides=interfaces.IEngineFactory,
         component=factory,
-        permission=zope.component.zcml.PublicPermission,
+        permission=PublicPermission,
         name=name)
     
     if setup:
@@ -100,5 +105,5 @@ def session(_context, name=u"", engine=u"", twophase=False,
         _context,
         provides=interfaces.IScopedSession,
         component=scoped_session,
-        permission=zope.component.zcml.PublicPermission,
+        permission=PublicPermission,
         name=name)

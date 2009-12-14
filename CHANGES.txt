@@ -4,6 +4,8 @@ z3c.saconfig
 0.9.2 (unreleased)
 ==================
 
+- Support current ZTK code
+
 - engine.echo must default to None for SQLAlchemy to honor
   logging.getLogger("sqlalchemy.engine").setLevel(...)
 
