@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-0.9.2 (unreleased)
+0.10 (unreleased)
 ==================
 
 - Support current ZTK code
@@ -9,6 +9,13 @@ z3c.saconfig
 - engine.echo must default to None for SQLAlchemy to honor
   logging.getLogger("sqlalchemy.engine").setLevel(...)
 
+- Do not enable convert_unicode by default. This option changes
+  standard SQLAlchemy behaviour by making String type columns return
+  unicode data.  This can be especially painful in Zope2 environments
+  where unicode is not always accepted.
+
+- Add a convert_unicode option to the zcml engine statement, allowing
+  people who need convert_unicode to enable it.
 
 0.9.1 (2009-08-14)
 ==================
