@@ -15,9 +15,11 @@ from zope.event import notify
 from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
                                      IEngineFactory, EngineCreatedEvent)
 
-SA_0_5 = sqlalchemy.__version__ == 'svn' or sqlalchemy.__version__.split('.')[:2] == ['0', '5']
+SA_0_5_andmore = sqlalchemy.__version__ == 'svn' \
+    or (int(sqlalchemy.__version__.split('.')[:2][0]) >= 0
+        and int(sqlalchemy.__version__.split('.')[:2][0] >= 5))
 
-if SA_0_5:
+if SA_0_5_andmore:
     SESSION_DEFAULTS = dict(
         autocommit=False,
         autoflush=True,
@@ -40,13 +42,13 @@ class GloballyScopedSession(object):
     to pass the right arguments to the superclasses __init__.
     """
     implements(IScopedSession)
-    
+
     def __init__(self, engine=u'', **kw):
         """Pass keywords arguments for sqlalchemy.orm.create_session.
 
         The `engine` argument is the name of a utility implementing
         IEngineFactory.
-        
+
         Note that GloballyScopedSesssion does have different defaults than
         ``create_session`` for various parameters where it makes sense
         for Zope integration, namely:
@@ -68,7 +70,7 @@ class GloballyScopedSession(object):
                                                   name=self.engine)
             kw['bind'] = engine_factory()
         return sqlalchemy.orm.create_session(**kw)
-    
+
     def scopeFunc(self):
         return thread.get_ident()
 
@@ -86,18 +88,18 @@ class SiteScopedSession(object):
 
     Even though this makes the sessions scoped per site,
     the utility can be registered globally to make this work.
-    
+
     Creation arguments as for GloballyScopedSession, except that no ``bind``
     parameter should be passed. This means it is possible to create
     a SiteScopedSession utility without passing parameters to its constructor.
     """
     implements(ISiteScopedSession)
-    
+
     def __init__(self, engine=u'', **kw):
         assert 'bind' not in kw
         self.engine = engine
         self.kw = _zope_session_defaults(kw)
-        
+
     def sessionFactory(self):
         engine_factory = component.getUtility(IEngineFactory,
                                               name=self.engine)
@@ -147,7 +149,7 @@ class EngineFactory(object):
             return  "%s_%f_%d" % (id(self), time.time(), _COUNTER)
         finally:
             _COUNTER_LOCK.release()
-    
+
     def __call__(self):
         # optimistically try get without lock
         engine = _ENGINES.get(self._key, None)
