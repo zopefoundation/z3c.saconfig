@@ -4,8 +4,8 @@ z3c.saconfig
 0.11 (unreleased)
 =================
 
-- works with sqlalchemy 0.6
- (could'nt work with sqlalchemy > 5)
+- works with sqlalchemy >= 0.5
+ (would'nt work with sqlalchemy > 5 prior)
 
 0.10 (2010-01-18)
 =================
