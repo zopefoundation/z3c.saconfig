@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-0.11 (unreleased)
+0.11 (2010-07-05)
 =================
 
 - Add pool_size, max_overflow, pool_recycle and pool_timeout options to the
