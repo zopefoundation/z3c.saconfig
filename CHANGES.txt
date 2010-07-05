@@ -8,8 +8,7 @@ z3c.saconfig
   <engine /> directive. This allows connection pooling options to be defined
   in ZCML.
 
-- works with sqlalchemy >= 0.5
- (would'nt work with sqlalchemy > 5 prior)
+- works with sqlalchemy >= 0.5 (wouldn't work with sqlalchemy > 5 prior)
 
 0.10 (2010-01-18)
 =================
