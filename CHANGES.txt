@@ -4,6 +4,10 @@ z3c.saconfig
 0.11 (unreleased)
 =================
 
+- Add pool_size, max_overflow, pool_recycle and pool_timeout options to the
+  <engine /> directive. This allows connection pooling options to be defined
+  in ZCML.
+
 - works with sqlalchemy >= 0.5
  (would'nt work with sqlalchemy > 5 prior)
 

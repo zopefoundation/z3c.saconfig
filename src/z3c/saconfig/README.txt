@@ -353,6 +353,25 @@ This time with a setup call.
   ... </configure>"""))
   got: Engine(sqlite:///:memory:)
 
+It's also possible to specify connection pooling options:
+
+  >>> xmlconfig.xmlconfig(StringIO("""
+  ... <configure xmlns="http://namespaces.zope.org/db">
+  ...   <engine name="dummy" url="sqlite:///:memory:" 
+  ...       pool_size="1"
+  ...       max_overflow="2"
+  ...       pool_recycle="3"
+  ...       pool_timeout="4"
+  ...       />
+  ... </configure>"""))
+
+  >>> engineFactory = component.getUtility(IEngineFactory, name="dummy")
+  >>> engineFactory._kw == {'convert_unicode': False, 'echo': None, 'pool_size': 1, 'max_overflow': 2, 'pool_recycle': 3, 'pool_timeout': 4}
+  True
+
+(See the SQLAlchemy documentation on connection pooling for details on how
+these arguments are used.)
+
 The session directive is provided to register a scoped session utility:
 
   >>> xmlconfig.xmlconfig(StringIO("""

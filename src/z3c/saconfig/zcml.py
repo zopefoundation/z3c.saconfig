@@ -45,7 +45,31 @@ class IEngineDirective(zope.interface.Interface):
         description=u'Callback for creating mappers etc. One argument is passed, the engine',
         required=False,
         default=None)
+
+    # Connection pooling options - probably only works on SQLAlchemy 0.5 and up
     
+    pool_size = zope.schema.Int(
+        title=u"The size of the pool to be maintained",
+        description=u"Defaults to 5 in SQLAlchemy.",
+        required=False)
+    
+    max_overflow = zope.schema.Int(
+        title=u"The maximum overflow size of the pool.",
+        description=u"When the number of checked-out connections reaches the " +
+                    u"size set in pool_size, additional connections will be " +
+                    u"returned up to this limit. Defaults to 10 in SQLAlchemy",
+        required=False)
+    
+    pool_recycle = zope.schema.Int(
+        title=u"Number of seconds between connection recycling",
+        description=u"Upon checkout, if this timeout is surpassed the connection "
+                    u"will be closed and replaced with a newly opened connection",
+        required=False)
+    
+    pool_timeout = zope.schema.Int(
+        title=u"The number of seconds to wait before giving up on returning a connection.",
+        description=u"Defaults to 30 in SQLAlchemy if not set",
+        required=False)
 
 class ISessionDirective(zope.interface.Interface):
     """Registers a database scoped session"""
@@ -74,10 +98,26 @@ class ISessionDirective(zope.interface.Interface):
         required=False,
         default="z3c.saconfig.utility.GloballyScopedSession")
 
-
-def engine(_context, url, name=u"", convert_unicode=False, echo=None, setup=None, twophase=False):
-    factory = utility.EngineFactory(
-        url, echo=echo, convert_unicode=convert_unicode)
+def engine(_context, url, name=u"", convert_unicode=False, echo=None, setup=None, twophase=False,
+    pool_size=None, max_overflow=None, pool_recycle=None, pool_timeout=None):
+    
+    kwargs = {
+        'echo': echo,
+        'convert_unicode': convert_unicode,
+    }
+    
+    # Only add these if they're actually set, since we want to let SQLAlchemy
+    # control the defaults
+    if pool_size is not None:
+        kwargs['pool_size'] = pool_size
+    if max_overflow is not None:
+        kwargs['max_overflow'] = max_overflow
+    if pool_recycle is not None:
+        kwargs['pool_recycle'] = pool_recycle
+    if pool_timeout is not None:
+        kwargs['pool_timeout'] = pool_timeout
+    
+    factory = utility.EngineFactory(url, **kwargs)
     
     zope.component.zcml.utility(
         _context,
