@@ -1,6 +1,13 @@
 z3c.saconfig
 ************
 
+0.12 (2010-09-28)
+=================
+
+- EngineCreatedEvent also gets ``engine_args`` and ``engine_kw`` as
+  attributes, so that event handlers can potentially differentiate
+  between engines.
+
 0.11 (2010-07-05)
 =================
 

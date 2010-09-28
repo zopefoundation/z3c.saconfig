@@ -145,10 +145,14 @@ When a new engine is created by an ``EngineFactory``, an
   >>> @component.adapter(IEngineCreatedEvent)
   ... def createdHandler(event):
   ...     print "created engine"
+  ...     print "args:", event.engine_args
+  ...     print "kw:", event.engine_kw
   >>> component.provideHandler(createdHandler)
   >>> event_engine_factory = EngineFactory(TEST_DSN1)
   >>> engine = event_engine_factory()
   created engine
+  args: ('sqlite:///:memory:',)
+  kw: {}
 
 Let's get rid of the event handler again::
 

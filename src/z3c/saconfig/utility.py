@@ -163,7 +163,7 @@ class EngineFactory(object):
                 args, kw = self.configuration()
                 _ENGINES[self._key] = engine = sqlalchemy.create_engine(
                     *args, **kw)
-                notify(EngineCreatedEvent(engine))
+                notify(EngineCreatedEvent(engine, args, kw))
             return _ENGINES[self._key]
         finally:
             _ENGINES_LOCK.release()

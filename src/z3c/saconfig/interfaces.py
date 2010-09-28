@@ -64,9 +64,17 @@ class IEngineCreatedEvent(Interface):
     an active engine.
     """
     engine = Attribute("The engine that was just created.")
-    
+
+    engine_args = Attribute("List of arguments given to SQLAlchemy "
+                            "create_engine")
+
+    engine_kw = Attribute("Dictionary of keyword attributes given to "
+                          "SQLAlchemy create_engine")
+
 class EngineCreatedEvent(object):
     implements(IEngineCreatedEvent)
 
-    def __init__(self, engine):
+    def __init__(self, engine, engine_args, engine_kw):
         self.engine = engine
+        self.engine_args = engine_args
+        self.engine_kw = engine_kw
