@@ -4,7 +4,7 @@ z3c.saconfig
 0.13 (unreleased)
 =================
 
-- Nothing changed yet.
+- Register engine factory setup using a zcml action
 
 
 0.12 (2010-09-28)

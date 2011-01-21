@@ -131,7 +131,12 @@ def engine(_context, url, name=u"", convert_unicode=False, echo=None, setup=None
             callback = resolve(setup)
         else:
             callback = resolve(setup, package=_context.package.__name__)
-        callback(factory())
+        _context.action(
+            discriminator = (interfaces.IEngineFactory, name),
+            callable = callback,
+            args = (factory(), ),
+            order=9999)
+
 
 def session(_context, name=u"", engine=u"", twophase=False,
             factory="z3c.saconfig.utility.GloballyScopedSession"):
