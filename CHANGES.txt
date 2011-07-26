@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-0.13 (unreleased)
+0.13 (2011-07-26)
 =================
 
 - Register engine factory setup using a zcml action
