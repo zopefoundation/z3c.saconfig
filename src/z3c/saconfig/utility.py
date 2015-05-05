@@ -16,8 +16,8 @@ from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
                                      IEngineFactory, EngineCreatedEvent)
 
 SA_0_5_andmore = sqlalchemy.__version__ == 'svn' \
-    or (int(sqlalchemy.__version__.split('.')[:2][0]) >= 0
-        and int(sqlalchemy.__version__.split('.')[:2][1]) >= 5)
+    or (int(sqlalchemy.__version__.split('.')[:2][0]),
+        int(sqlalchemy.__version__.split('.')[:2][1]) >= (0, 5))
 
 if SA_0_5_andmore:
     SESSION_DEFAULTS = dict(
