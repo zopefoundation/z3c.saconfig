@@ -15,20 +15,12 @@ from zope.event import notify
 from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
                                      IEngineFactory, EngineCreatedEvent)
 
-SA_0_5_andmore = sqlalchemy.__version__ == 'svn' \
-    or (int(sqlalchemy.__version__.split('.')[:2][0]),
-        int(sqlalchemy.__version__.split('.')[:2][1]) >= (0, 5))
 
-if SA_0_5_andmore:
-    SESSION_DEFAULTS = dict(
-        autocommit=False,
-        autoflush=True,
-        extension=ZopeTransactionExtension())
-else:
-    SESSION_DEFAULTS = dict(
-        autoflush=True,
-        transactional=True,
-        extension=ZopeTransactionExtension())
+SESSION_DEFAULTS = dict(
+    autocommit=False,
+    autoflush=True,
+    extension=ZopeTransactionExtension())
+
 
 class GloballyScopedSession(object):
     """A globally scoped session.
