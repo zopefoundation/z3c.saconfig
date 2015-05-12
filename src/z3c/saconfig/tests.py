@@ -111,7 +111,7 @@ def test_suite():
     suite = unittest.TestSuite()
     
     suite.addTest(doctest.DocFileSuite(
-        'README.txt',
+        'README.rst',
         optionflags=optionflags,
         setUp=setUpReadMe,
         tearDown=tearDownReadMe,

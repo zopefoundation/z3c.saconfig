@@ -4,7 +4,7 @@ import sys, os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-long_description = read('src/z3c/saconfig/README.txt') + '\n' + read('CHANGES.txt')
+long_description = read('src/z3c/saconfig/README.rst') + '\n' + read('CHANGES.rst')
 
 setup(name='z3c.saconfig',
       version='0.14dev',
