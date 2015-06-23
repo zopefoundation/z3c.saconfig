@@ -4,7 +4,8 @@ z3c.saconfig
 0.14 (unreleased)
 =================
 
-- Nothing changed yet.
+- Drop support for sqlalchemy < 0.5
+  [oggers]
 
 
 0.13 (2011-07-26)
@@ -20,6 +21,7 @@ z3c.saconfig
   attributes, so that event handlers can potentially differentiate
   between engines.
 
+
 0.11 (2010-07-05)
 =================
 
@@ -28,6 +30,7 @@ z3c.saconfig
   in ZCML.
 
 - works with sqlalchemy >= 0.5 (wouldn't work with sqlalchemy > 5 prior)
+
 
 0.10 (2010-01-18)
 =================
@@ -45,12 +48,14 @@ z3c.saconfig
 - Add a convert_unicode option to the zcml engine statement, allowing
   people who need convert_unicode to enable it.
 
+
 0.9.1 (2009-08-14)
 ==================
 
 - Include documentation on PyPI.
 
 - Small documentation tweaks.
+
 
 0.9 (2009-08-14)
 ================
