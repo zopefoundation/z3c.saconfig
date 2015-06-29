@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-0.14 (unreleased)
+0.14 (2015-06-29)
 =================
 
 - Drop support for sqlalchemy < 0.5
