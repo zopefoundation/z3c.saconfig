@@ -1,5 +1,5 @@
 =================
- zope.sqlalchemy
+ z3c.saconfig
 =================
 
-Zope/SQLAlchemy transaction integration. See src/z3c/saconfig/README.rst.
+Minimal SQLAlchemy ORM session configuration for Zope. See src/z3c/saconfig/README.rst.
