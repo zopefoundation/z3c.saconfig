@@ -13,7 +13,7 @@ setup(name='z3c.saconfig',
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=['Development Status :: 4 - Beta',
                    'Environment :: Web Environment',
-                   'Framework :: Zope3',
+                   'Framework :: Zope :: 3',
                    'Intended Audience :: Developers',
                    'License :: OSI Approved :: Zope Public License',
                    'Operating System :: OS Independent',
