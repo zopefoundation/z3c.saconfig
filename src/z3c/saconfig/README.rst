@@ -334,33 +334,33 @@ Configuration using ZCML
 A configuration directive is provided to register a database engine
 factory using ZCML.
 
-  >>> from six import StringIO
+  >>> from io import BytesIO
   >>> from zope.configuration import xmlconfig
   >>> import z3c.saconfig
   >>> xmlconfig.XMLConfig('meta.zcml', z3c.saconfig)()
 
 Let's try registering the directory again.
 
-  >>> xmlconfig.xmlconfig(StringIO("""
+  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <engine name="dummy" url="sqlite:///:memory:" />
-  ... </configure>"""))
+  ... </configure>""")))
 
   >>> component.getUtility(IEngineFactory, name="dummy")
   <z3c.saconfig.utility.EngineFactory object at ...>
 
 This time with a setup call.
 
-  >>> xmlconfig.xmlconfig(StringIO("""
+  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <engine name="dummy2" url="sqlite:///:memory:"
   ...           setup="z3c.saconfig.tests.engine_subscriber" />
-  ... </configure>"""))
+  ... </configure>""")))
   got: Engine(sqlite:///:memory:)
 
 It's also possible to specify connection pooling options:
 
-  >>> xmlconfig.xmlconfig(StringIO("""
+  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <engine name="dummy" url="sqlite:///:memory:"
   ...       pool_size="1"
@@ -368,7 +368,7 @@ It's also possible to specify connection pooling options:
   ...       pool_recycle="3"
   ...       pool_timeout="4"
   ...       />
-  ... </configure>"""))
+  ... </configure>""")))
 
   >>> engineFactory = component.getUtility(IEngineFactory, name="dummy")
   >>> engineFactory._kw == {'convert_unicode': False, 'echo': None, 'pool_size': 1, 'max_overflow': 2, 'pool_recycle': 3, 'pool_timeout': 4}
@@ -379,10 +379,10 @@ these arguments are used.)
 
 The session directive is provided to register a scoped session utility:
 
-  >>> xmlconfig.xmlconfig(StringIO("""
+  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <session name="dummy" engine="dummy2" />
-  ... </configure>"""))
+  ... </configure>""")))
 
   >>> component.getUtility(IScopedSession, name="dummy")
   <z3c.saconfig.utility.GloballyScopedSession object at ...>

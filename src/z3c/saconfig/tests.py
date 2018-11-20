@@ -12,7 +12,7 @@
 # NOTE: The sqlite that ships with Mac OS X 10.4 is buggy.
 # Install a newer version (3.5.6) and rebuild pysqlite2 against it.
 from zope import component
-from zope.component import registry
+from zope.interface import registry
 from zope.testing import cleanup
 from zope.testing.cleanup import addCleanUp
 
