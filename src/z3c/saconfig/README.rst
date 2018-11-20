@@ -26,7 +26,6 @@ engine is set up with a global utility.
 
 We use the SQLAlchemy ``sqlalchemy.ext.declarative`` extension to
 define some tables and classes::
-
   >>> from sqlalchemy import *
   >>> from sqlalchemy.ext.declarative import declarative_base
   >>> from sqlalchemy.orm import relation
@@ -141,13 +140,12 @@ When a new engine is created by an ``EngineFactory``, an
 ``IEngineCreatedEvent`` is fired. This event has an attribute
 ``engine`` that contains the engine that was just created::
 
-  >>> import six
   >>> from z3c.saconfig.interfaces import IEngineCreatedEvent
   >>> @component.adapter(IEngineCreatedEvent)
   ... def createdHandler(event):
-  ...     six.print_("created engine")
-  ...     six.print_("args:", event.engine_args)
-  ...     six.print_("kw:", event.engine_kw)
+  ...     print("created engine")
+  ...     print("args: {0}".format(event.engine_args))
+  ...     print("kw: {0}".format(event.engine_kw))
   >>> component.provideHandler(createdHandler)
   >>> event_engine_factory = EngineFactory(TEST_DSN1)
   >>> engine = event_engine_factory()
@@ -341,26 +339,26 @@ factory using ZCML.
 
 Let's try registering the directory again.
 
-  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
+  >>> xmlconfig.xmlconfig(BytesIO(b"""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <engine name="dummy" url="sqlite:///:memory:" />
-  ... </configure>""")))
+  ... </configure>"""))
 
   >>> component.getUtility(IEngineFactory, name="dummy")
   <z3c.saconfig.utility.EngineFactory object at ...>
 
 This time with a setup call.
 
-  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
+  >>> xmlconfig.xmlconfig(BytesIO(b"""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <engine name="dummy2" url="sqlite:///:memory:"
   ...           setup="z3c.saconfig.tests.engine_subscriber" />
-  ... </configure>""")))
+  ... </configure>"""))
   got: Engine(sqlite:///:memory:)
 
 It's also possible to specify connection pooling options:
 
-  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
+  >>> xmlconfig.xmlconfig(BytesIO(b"""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <engine name="dummy" url="sqlite:///:memory:"
   ...       pool_size="1"
@@ -368,7 +366,7 @@ It's also possible to specify connection pooling options:
   ...       pool_recycle="3"
   ...       pool_timeout="4"
   ...       />
-  ... </configure>""")))
+  ... </configure>"""))
 
   >>> engineFactory = component.getUtility(IEngineFactory, name="dummy")
   >>> engineFactory._kw == {'convert_unicode': False, 'echo': None, 'pool_size': 1, 'max_overflow': 2, 'pool_recycle': 3, 'pool_timeout': 4}
@@ -379,10 +377,10 @@ these arguments are used.)
 
 The session directive is provided to register a scoped session utility:
 
-  >>> xmlconfig.xmlconfig(BytesIO(six.b("""
+  >>> xmlconfig.xmlconfig(BytesIO(b"""
   ... <configure xmlns="http://namespaces.zope.org/db">
   ...   <session name="dummy" engine="dummy2" />
-  ... </configure>""")))
+  ... </configure>"""))
 
   >>> component.getUtility(IScopedSession, name="dummy")
   <z3c.saconfig.utility.GloballyScopedSession object at ...>

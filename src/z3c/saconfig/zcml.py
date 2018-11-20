@@ -31,9 +31,9 @@ class IEngineDirective(zope.interface.Interface):
 
     convert_unicode = zope.schema.Bool(
         title=u'Convert all string columns to unicode',
-        description=u'This setting makes the SQLAlchemy String column type ' +
-                    u'equivalent to UnicodeString. Do not use this unless ' +
-                    u'there is a good reason not to use standard ' +
+        description=u'This setting makes the SQLAlchemy String column type '
+                    u'equivalent to UnicodeString. Do not use this unless '
+                    u'there is a good reason not to use standard '
                     u'UnicodeString columns',
         required=False,
         default=False)
@@ -46,7 +46,7 @@ class IEngineDirective(zope.interface.Interface):
 
     setup = zope.schema.BytesLine(
         title=u'After engine creation hook',
-        description=u'Callback for creating mappers etc. ' +
+        description=u'Callback for creating mappers etc. '
                     u'One argument is passed, the engine',
         required=False,
         default=None)
@@ -60,21 +60,21 @@ class IEngineDirective(zope.interface.Interface):
 
     max_overflow = zope.schema.Int(
         title=u"The maximum overflow size of the pool.",
-        description=u"When the number of checked-out connections " +
-                    u"reaches the size set in pool_size, additional " +
-                    u"connections will be returned up to this limit. " +
+        description=u"When the number of checked-out connections "
+                    u"reaches the size set in pool_size, additional "
+                    u"connections will be returned up to this limit. "
                     u"Defaults to 10 in SQLAlchemy",
         required=False)
 
     pool_recycle = zope.schema.Int(
         title=u"Number of seconds between connection recycling",
-        description=u"Upon checkout, if this timeout is " +
-                    u"surpassed the connection will be closed and " +
+        description=u"Upon checkout, if this timeout is "
+                    u"surpassed the connection will be closed and "
                     u"replaced with a newly opened connection",
         required=False)
 
     pool_timeout = zope.schema.Int(
-        title=u"The number of seconds to wait before giving up on " +
+        title=u"The number of seconds to wait before giving up on "
               u"returning a connection.",
         description=u"Defaults to 30 in SQLAlchemy if not set",
         required=False)
@@ -139,10 +139,8 @@ def engine(_context, url, name=u"", convert_unicode=False,
         name=name)
 
     if setup:
-        try:
+        if isinstance(setup, bytes):
             setup = setup.decode()
-        except AttributeError:
-            pass
 
         if _context.package is None:
             callback = resolve(setup)
