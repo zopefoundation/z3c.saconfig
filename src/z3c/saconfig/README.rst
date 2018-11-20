@@ -52,7 +52,7 @@ utility makes sure an engine is created and cached for us.
   >>> engine_factory = EngineFactory(TEST_DSN)
 
 You can pass the parameters you'd normally pass to
-``sqlalchemy.create_engine`` to ``EngineFactory``. 
+``sqlalchemy.create_engine`` to ``EngineFactory``.
 
 We now register the engine factory as a global utility using
 ``zope.component``. Normally you'd use either ZCML or Grok to do this
@@ -93,14 +93,14 @@ right ones for Zope integration, so normally you wouldn't need to
 supply these, but you could pass in your own if you do need it.
 
 We now register this as an ``IScopedSession`` utility::
-  
+
   >>> from z3c.saconfig.interfaces import IScopedSession
   >>> component.provideUtility(utility, provides=IScopedSession)
- 
+
 We are done with configuration now. As you have seen it involves
 setting up two utilities, ``IEngineFactory`` and ``IScopedSession``,
 where only the latter is really needed in this globally shared session
-use case. 
+use case.
 
 After the ``IScopedSession`` utility is registered, one can import the
 ``Session`` class from z3c.saconfig.  This ``Session`` class is like
@@ -122,15 +122,15 @@ Now things go the usual ``zope.sqlalchemy`` way, which is like
 ``SQLAlchemy`` except you can use Zope's ``transaction`` module::
 
   >>> session.query(User).all()
-  []    
+  []
   >>> import transaction
   >>> session.add(User(name='bob'))
   >>> transaction.commit()
 
   >>> session = Session()
   >>> bob = session.query(User).all()[0]
-  >>> bob.name
-  u'bob'
+  >>> bob.name == 'bob'
+  True
   >>> bob.addresses
   []
 
@@ -141,12 +141,13 @@ When a new engine is created by an ``EngineFactory``, an
 ``IEngineCreatedEvent`` is fired. This event has an attribute
 ``engine`` that contains the engine that was just created::
 
+  >>> import six
   >>> from z3c.saconfig.interfaces import IEngineCreatedEvent
   >>> @component.adapter(IEngineCreatedEvent)
   ... def createdHandler(event):
-  ...     print "created engine"
-  ...     print "args:", event.engine_args
-  ...     print "kw:", event.engine_kw
+  ...     six.print_("created engine")
+  ...     six.print_("args:", event.engine_args)
+  ...     six.print_("kw:", event.engine_kw)
   >>> component.provideHandler(createdHandler)
   >>> event_engine_factory = EngineFactory(TEST_DSN1)
   >>> engine = event_engine_factory()
@@ -157,7 +158,7 @@ When a new engine is created by an ``EngineFactory``, an
 Let's get rid of the event handler again::
 
   >>> sm = component.getSiteManager()
-  >>> sm.unregisterHandler(None, 
+  >>> sm.unregisterHandler(None,
   ...   required=[IEngineCreatedEvent])
   True
 
@@ -230,7 +231,7 @@ We can look up our global utility even if we're in a site::
 
   >>> component.getUtility(IScopedSession) is utility
   True
-  
+
 Phew. That was a lot of set up, but basically this is actually just
 straightforward utility setup code; you should use the APIs or Grok's
 ``grok.local_utility`` directive to set up local utilities. Now all
@@ -241,7 +242,7 @@ that is out of the way, we can create a session for ``site1``::
 
 The database is still empty::
 
-  >>> session.query(User).all() 
+  >>> session.query(User).all()
   []
 
 We'll add something to this database now::
@@ -252,33 +253,33 @@ We'll add something to this database now::
 ``bob`` is now there::
 
   >>> session = Session()
-  >>> session.query(User).all()[0].name
-  u'bob'
+  >>> session.query(User).all()[0].name == 'bob'
+  True
 
 Now we'll switch to ``site2``::
 
   >>> setSite(site2)
-  
+
 If we create a new session now, we should now be working with a
 different database, which should still be empty::
 
   >>> session = Session()
-  >>> session.query(User).all() 
+  >>> session.query(User).all()
   []
-  
+
 We'll add ``fred`` to this database::
 
   >>> session.add(User(name='fred'))
   >>> transaction.commit()
 
 Now ``fred`` is indeed there::
- 
+
   >>> session = Session()
   >>> users = session.query(User).all()
   >>> len(users)
   1
-  >>> users[0].name
-  u'fred'
+  >>> users[0].name == 'fred'
+  True
 
 And ``bob`` is still in ``site1``::
 
@@ -287,8 +288,8 @@ And ``bob`` is still in ``site1``::
   >>> users = session.query(User).all()
   >>> len(users)
   1
-  >>> users[0].name
-  u'bob'
+  >>> users[0].name == 'bob'
+  True
 
 Engines and Threading
 =====================
@@ -299,7 +300,7 @@ Engines and Threading
   ...     engine = engine_factory1()
 
 Engine factories must produce the same engine:
- 
+
   >>> setEngine()
   >>> engine is engine_factory1()
   True
@@ -316,7 +317,7 @@ Even if you call it in a different thread:
   True
 
 Unless they are reset:
-  
+
   >>> engine_factory1.reset()
   >>> engine is engine_factory1()
   False
@@ -333,7 +334,7 @@ Configuration using ZCML
 A configuration directive is provided to register a database engine
 factory using ZCML.
 
-  >>> from cStringIO import StringIO
+  >>> from six import StringIO
   >>> from zope.configuration import xmlconfig
   >>> import z3c.saconfig
   >>> xmlconfig.XMLConfig('meta.zcml', z3c.saconfig)()
@@ -361,7 +362,7 @@ It's also possible to specify connection pooling options:
 
   >>> xmlconfig.xmlconfig(StringIO("""
   ... <configure xmlns="http://namespaces.zope.org/db">
-  ...   <engine name="dummy" url="sqlite:///:memory:" 
+  ...   <engine name="dummy" url="sqlite:///:memory:"
   ...       pool_size="1"
   ...       max_overflow="2"
   ...       pool_recycle="3"

@@ -3,6 +3,7 @@ from .interfaces import IScopedSession
 from .utility import EngineFactory
 from zope.configuration.name import resolve
 
+import six
 import zope.component.zcml
 import zope.interface
 import zope.schema
@@ -19,60 +20,68 @@ class IEngineDirective(zope.interface.Interface):
     """Registers a database engine factory."""
 
     url = zope.schema.URI(
-        title=u"Database URL",
-        description=u"e.g. 'sqlite:///:memory:'.",
+        title=six.text_type("Database URL"),
+        description=six.text_type("e.g. 'sqlite:///:memory:'."),
         required=True)
 
     name = zope.schema.Text(
-        title=u"Engine name",
-        description=u"Empty if this is the default engine.",
+        title=six.text_type("Engine name"),
+        description=six.text_type("Empty if this is the default engine."),
         required=False,
-        default=u"")
+        default=six.text_type(""))
 
     convert_unicode = zope.schema.Bool(
-        title=u'Convert all string columns to unicode',
-        description=u'This setting makes the SQLAlchemy String column type '
-                    u'equivalent to UnicodeString. Do not use this unless '
-                    u'there is a good reason not to use standard '
-                    u'UnicodeString columns',
+        title=six.text_type('Convert all string columns to unicode'),
+        description=six.text_type(
+            'This setting makes the SQLAlchemy String column type '
+            'equivalent to UnicodeString. Do not use this unless '
+            'there is a good reason not to use standard '
+            'UnicodeString columns'),
         required=False,
         default=False)
 
     echo = zope.schema.Bool(
-        title=u'Echo SQL statements',
-        description=u'Enable logging statements for debugging.',
+        title=six.text_type('Echo SQL statements'),
+        description=six.text_type('Enable logging statements for debugging.'),
         required=False,
         default=None)
 
     setup = zope.schema.BytesLine(
-        title=u'After engine creation hook',
-        description=u'Callback for creating mappers etc. One argument is passed, the engine',
+        title=six.text_type('After engine creation hook'),
+        description=six.text_type(
+            'Callback for creating mappers etc. One argument '
+            'is passed, the engine'),
         required=False,
         default=None)
 
     # Connection pooling options - probably only works on SQLAlchemy 0.5 and up
 
     pool_size = zope.schema.Int(
-        title=u"The size of the pool to be maintained",
-        description=u"Defaults to 5 in SQLAlchemy.",
+        title=six.text_type("The size of the pool to be maintained"),
+        description=six.text_type("Defaults to 5 in SQLAlchemy."),
         required=False)
 
     max_overflow = zope.schema.Int(
-        title=u"The maximum overflow size of the pool.",
-        description=u"When the number of checked-out connections reaches the " +
-                    u"size set in pool_size, additional connections will be " +
-                    u"returned up to this limit. Defaults to 10 in SQLAlchemy",
+        title=six.text_type("The maximum overflow size of the pool."),
+        description=six.text_type(
+            "When the number of checked-out connections reaches the "
+            "size set in pool_size, additional connections will be "
+            "returned up to this limit. Defaults to 10 in SQLAlchemy"),
         required=False)
 
     pool_recycle = zope.schema.Int(
-        title=u"Number of seconds between connection recycling",
-        description=u"Upon checkout, if this timeout is surpassed the connection "
-                    u"will be closed and replaced with a newly opened connection",
+        title=six.text_type("Number of seconds between connection recycling"),
+        description=six.text_type(
+            "Upon checkout, if this timeout is surpassed the connection "
+            "will be closed and replaced with a newly opened connection"),
         required=False)
 
     pool_timeout = zope.schema.Int(
-        title=u"The number of seconds to wait before giving up on returning a connection.",
-        description=u"Defaults to 30 in SQLAlchemy if not set",
+        title=six.text_type(
+            "The number of seconds to wait before giving up on "
+            "returning a connection."),
+        description=six.text_type(
+            "Defaults to 30 in SQLAlchemy if not set"),
         required=False)
 
 
@@ -80,31 +89,31 @@ class ISessionDirective(zope.interface.Interface):
     """Registers a database scoped session"""
 
     name = zope.schema.Text(
-        title=u"Scoped session name",
-        description=u"Empty if this is the default session.",
+        title=six.text_type("Scoped session name"),
+        description=six.text_type("Empty if this is the default session."),
         required=False,
-        default=u"")
+        default=six.text_type(""))
 
     twophase = zope.schema.Bool(
-        title=u'Use two-phase commit',
-        description=u'Session should use two-phase commit',
+        title=six.text_type('Use two-phase commit'),
+        description=six.text_type('Session should use two-phase commit'),
         required=False,
         default=False)
 
     engine = zope.schema.Text(
-        title=u"Engine name",
-        description=u"Empty if this is to use the default engine.",
+        title=six.text_type("Engine name"),
+        description=six.text_type("Empty if this is to use the default engine."),
         required=False,
-        default=u"")
+        default=six.text_type(""))
 
     factory = zope.schema.DottedName(
-        title=u'Scoped Session utility factory',
-        description=u'GloballyScopedSession by default',
+        title=six.text_type('Scoped Session utility factory'),
+        description=six.text_type('GloballyScopedSession by default'),
         required=False,
         default="z3c.saconfig.utility.GloballyScopedSession")
 
 
-def engine(_context, url, name=u"", convert_unicode=False,
+def engine(_context, url, name=six.text_type(""), convert_unicode=False,
            echo=None, setup=None, twophase=False,
            pool_size=None, max_overflow=None, pool_recycle=None,
            pool_timeout=None):
@@ -135,6 +144,11 @@ def engine(_context, url, name=u"", convert_unicode=False,
         name=name)
 
     if setup:
+        try:
+            setup = setup.decode()
+        except AttributeError:
+            pass
+
         if _context.package is None:
             callback = resolve(setup)
         else:
@@ -146,7 +160,7 @@ def engine(_context, url, name=u"", convert_unicode=False,
             order=9999)
 
 
-def session(_context, name=u"", engine=u"", twophase=False,
+def session(_context, name="", engine="", twophase=False,
             factory="z3c.saconfig.utility.GloballyScopedSession"):
     if _context.package is None:
         ScopedSession = resolve(factory)

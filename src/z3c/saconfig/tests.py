@@ -18,6 +18,7 @@ from zope.testing.cleanup import addCleanUp
 
 import doctest
 import os
+import six
 import unittest
 import zope.component.eventtesting
 
@@ -107,7 +108,7 @@ addCleanUp(resetHooks)
 
 
 def engine_subscriber(engine):
-    print "got: %s " % engine
+    six.print_('got: {0!s} '.format(engine))
 
 
 def test_suite():
