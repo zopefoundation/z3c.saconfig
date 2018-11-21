@@ -1,4 +1,7 @@
-from zope.interface import Interface, implements, Attribute
+from zope.interface import Attribute
+from zope.interface import implementer
+from zope.interface import Interface
+
 
 class IScopedSession(Interface):
     """A utility that plugs into SQLAlchemy's scoped session machinery.
@@ -23,12 +26,14 @@ class IScopedSession(Interface):
         like a thread id, or a tuple with thread id and application id.
         """
 
+
 class ISiteScopedSession(IScopedSession):
     """A utility that makes sessions be scoped by site.
     """
     def siteScopeFunc():
         """Returns a unique id per site.
         """
+
 
 class IEngineFactory(Interface):
     """A utility that maintains an SQLAlchemy engine.
@@ -57,6 +62,7 @@ class IEngineFactory(Interface):
         This causes the engine to be recreated on next use.
         """
 
+
 class IEngineCreatedEvent(Interface):
     """An SQLAlchemy engine has been created.
 
@@ -71,8 +77,9 @@ class IEngineCreatedEvent(Interface):
     engine_kw = Attribute("Dictionary of keyword attributes given to "
                           "SQLAlchemy create_engine")
 
+
+@implementer(IEngineCreatedEvent)
 class EngineCreatedEvent(object):
-    implements(IEngineCreatedEvent)
 
     def __init__(self, engine, engine_args, engine_kw):
         self.engine = engine

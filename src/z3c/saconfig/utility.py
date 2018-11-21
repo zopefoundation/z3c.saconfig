@@ -1,19 +1,24 @@
 """
 Some reusable, standard implementations of IScopedSession.
 """
-
-import time
-import thread
-import threading
-import sqlalchemy
-
-from zope.interface import implements
+from z3c.saconfig.interfaces import EngineCreatedEvent
+from z3c.saconfig.interfaces import IEngineFactory
+from z3c.saconfig.interfaces import IScopedSession
+from z3c.saconfig.interfaces import ISiteScopedSession
 from zope import component
-from zope.sqlalchemy import ZopeTransactionExtension
 from zope.event import notify
+from zope.interface import implementer
+from zope.sqlalchemy import ZopeTransactionExtension
 
-from z3c.saconfig.interfaces import (IScopedSession, ISiteScopedSession,
-                                     IEngineFactory, EngineCreatedEvent)
+import sqlalchemy
+import threading
+import time
+
+
+try:
+    from threading import get_ident
+except ImportError:
+    from thread import get_ident
 
 
 SESSION_DEFAULTS = dict(
@@ -22,6 +27,7 @@ SESSION_DEFAULTS = dict(
     extension=ZopeTransactionExtension())
 
 
+@implementer(IScopedSession)
 class GloballyScopedSession(object):
     """A globally scoped session.
 
@@ -33,7 +39,6 @@ class GloballyScopedSession(object):
     a custom factory, or alternatively subclass it and override __init__
     to pass the right arguments to the superclasses __init__.
     """
-    implements(IScopedSession)
 
     def __init__(self, engine=u'', **kw):
         """Pass keywords arguments for sqlalchemy.orm.create_session.
@@ -64,7 +69,8 @@ class GloballyScopedSession(object):
         return sqlalchemy.orm.create_session(**kw)
 
     def scopeFunc(self):
-        return thread.get_ident()
+        return get_ident()
+
 
 def _zope_session_defaults(kw):
     """Adjust keyword parameters with proper defaults for Zope.
@@ -75,6 +81,8 @@ def _zope_session_defaults(kw):
 
     return d
 
+
+@implementer(ISiteScopedSession)
 class SiteScopedSession(object):
     """A session that is scoped per site.
 
@@ -85,7 +93,6 @@ class SiteScopedSession(object):
     parameter should be passed. This means it is possible to create
     a SiteScopedSession utility without passing parameters to its constructor.
     """
-    implements(ISiteScopedSession)
 
     def __init__(self, engine=u'', **kw):
         assert 'bind' not in kw
@@ -100,18 +107,22 @@ class SiteScopedSession(object):
         return sqlalchemy.orm.create_session(**kw)
 
     def scopeFunc(self):
-        return (thread.get_ident(), self.siteScopeFunc())
+        return (get_ident(), self.siteScopeFunc())
 
     def siteScopeFunc(self):
         raise NotImplementedError
 
 # Credits: This method of storing engines lifted from zope.app.cache.ram
+
+
 _COUNTER = 0
 _COUNTER_LOCK = threading.Lock()
 
 _ENGINES = {}
 _ENGINES_LOCK = threading.Lock()
 
+
+@implementer(IEngineFactory)
 class EngineFactory(object):
     """An engine factory.
 
@@ -125,7 +136,6 @@ class EngineFactory(object):
     attributes, which is nicer if you are using Persistent (or Zope 3
     schema). In this case you need to override the configuration method.
     """
-    implements(IEngineFactory)
 
     def __init__(self, *args, **kw):
         self._args = args
@@ -138,7 +148,7 @@ class EngineFactory(object):
         _COUNTER_LOCK.acquire()
         try:
             _COUNTER += 1
-            return  "%s_%f_%d" % (id(self), time.time(), _COUNTER)
+            return "%s_%f_%d" % (id(self), time.time(), _COUNTER)
         finally:
             _COUNTER_LOCK.release()
 

@@ -4,7 +4,8 @@ z3c.saconfig
 0.15 (unreleased)
 =================
 
-- Nothing changed yet.
+- Added Python 3.5 and 3.6 compatibility [nazrulworld]
+- fix: `Issue with python3 compatibility, on zope interface implementation <https://github.com/zopefoundation/z3c.saconfig/issues/4>`_ [nazrulworld]
 
 
 0.14 (2015-06-29)
