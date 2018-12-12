@@ -11,7 +11,7 @@ def read(*rnames):
 long_description = read('src/z3c/saconfig/README.rst') + '\n' + read('CHANGES.rst')
 
 setup(name='z3c.saconfig',
-      version='0.15.dev0',
+      version='0.16.dev0',
       description="Minimal SQLAlchemy ORM session configuration for Zope",
       long_description=long_description,
       # Get more strings from https://pypi.org/pypi?%3Aaction=list_classifiers
@@ -23,8 +23,10 @@ setup(name='z3c.saconfig',
                    'License :: OSI Approved :: Zope Public License',
                    'Operating System :: OS Independent',
                    'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3.4',
                    'Programming Language :: Python :: 3.5',
                    'Programming Language :: Python :: 3.6',
+                   'Programming Language :: Python :: 3.7',
                    'Topic :: Internet :: WWW/HTTP',
                    'Topic :: Software Development :: Libraries',
                    'Topic :: Database',
