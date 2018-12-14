@@ -1,8 +1,8 @@
 z3c.saconfig
 ************
 
-0.16 (unreleased)
-=================
+0.16.0 (unreleased)
+===================
 
 - Added support for Python 3.4 and 3.7 [nazrulworld]
 
