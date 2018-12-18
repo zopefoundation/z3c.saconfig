@@ -26,6 +26,7 @@ engine is set up with a global utility.
 
 We use the SQLAlchemy ``sqlalchemy.ext.declarative`` extension to
 define some tables and classes::
+
   >>> from sqlalchemy import *
   >>> from sqlalchemy.ext.declarative import declarative_base
   >>> from sqlalchemy.orm import relation
