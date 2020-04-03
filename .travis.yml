@@ -6,25 +6,14 @@ python:
     - 3.7
     - 3.8
 
-cache:
-  pip: true
-  directories:
-    - $HOME/buildout-cache
-
-before_install:
-  - mkdir -p $HOME/buildout-cache/{eggs,downloads}
-  - mkdir $HOME/.buildout
-  - echo "[buildout]" > $HOME/.buildout/default.cfg
-  - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
-  - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-  - virtualenv --clear -p `which python` .
-  - bin/pip install -U pip
-  - bin/pip install -r requirements.txt
-
 install:
-    - bin/buildout -N -t 3 -c buildout.cfg
+    - bin/pip install -U pip zope.testrunner zope.testing
+
 script:
-    - bin/test -pvc
+    - zope-testrunner --test-path=src {posargs:-pvc}
 
 notifications:
     email: false
+
+cache:
+  pip: true
