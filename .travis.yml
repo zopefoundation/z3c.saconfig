@@ -1,37 +1,19 @@
 language: python
-sudo: false
 python:
     - 2.7
-    - 3.4
     - 3.5
     - 3.6
-
-matrix:
-    include:
-        - python: "3.7"
-          dist: xenial
-          sudo: true
-
-cache:
-  pip: true
-  directories:
-    - $HOME/buildout-cache
-
-before_install:
-  - mkdir -p $HOME/buildout-cache/{eggs,downloads}
-  - mkdir $HOME/.buildout
-  - echo "[buildout]" > $HOME/.buildout/default.cfg
-  - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
-  - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-  - virtualenv --clear -p `which python` .
-  - bin/pip install -U pip
-  - bin/pip install -r requirements.txt
+    - 3.7
+    - 3.8
 
 install:
-    - bin/buildout -N -t 3 -c buildout.cfg
+    - pip install -U pip zope.testrunner zope.testing
+
 script:
-    - bin/test -pvc
+    - zope-testrunner --test-path=src {posargs:-pvc}
 
 notifications:
     email: false
 
+cache:
+  pip: true

@@ -11,11 +11,12 @@ Installation
 ============
 
 This package can be checked out from
-svn://svn.zope.org/repos/main/z3c.saconfig/trunk. You can then execute
+https://github.com/zopefoundation/z3c.saconfig. You can then execute
 the buildout to download and install the requirements and install the
 test runner. Using your desired python run::
 
-  $ python bootstrap.py
+  $ python3 -m venv .
+  $ bin/pip install -r requirements.txt
 
 If installation configuration changes later, you need to run::
 
@@ -34,7 +35,7 @@ To enable testing with your own database set the ``TEST_DSN`` and
 ``TEST_DSN2`` environment variables to your sqlalchemy database dsn::
 
   $ export TEST_DSN=postgres://test:test@localhost/test
- 
+
 Since the tests also need access to a second, independent database,
 you also need to define a TEST_DSN2 that points to a different
 database::

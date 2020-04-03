@@ -4,7 +4,8 @@ z3c.saconfig
 0.16.0 (unreleased)
 ===================
 
-- Added support for Python 3.4 and 3.7 [nazrulworld]
+- Added support for Python 3.7 [nazrulworld]
+- Added support for Python 3.8 [icemac]
 - Added support for zope.sqlalchemy >= 1.2 [cklinger]
 - Updated local boostrap.py [cklinger]
 - Use newer SQLAlchemy for tests [cklinger]
