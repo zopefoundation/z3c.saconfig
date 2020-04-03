@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-0.16.0 (unreleased)
+0.16.0 (2020-04-03)
 ===================
 
 - Added support for Python 3.7 [nazrulworld]
