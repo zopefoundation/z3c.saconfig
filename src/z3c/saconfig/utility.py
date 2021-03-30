@@ -25,7 +25,7 @@ except ImportError:
 SESSION_DEFAULTS = dict(
     autocommit=False,
     autoflush=True,
-    )
+)
 
 
 @implementer(IScopedSession)

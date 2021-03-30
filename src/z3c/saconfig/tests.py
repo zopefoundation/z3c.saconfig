@@ -120,7 +120,7 @@ def test_suite():
         'TEST_DSN1': TEST_DSN1,
         'TEST_DSN2': TEST_DSN2,
         'TEST_TWOPHASE': TEST_TWOPHASE,
-        }
+    }
 
     suite = unittest.TestSuite()
 
