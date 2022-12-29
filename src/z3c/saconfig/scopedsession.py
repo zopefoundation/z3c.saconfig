@@ -1,9 +1,10 @@
 from sqlalchemy.orm import scoped_session
-from z3c.saconfig.interfaces import IScopedSession
 from zope import component
 
+from z3c.saconfig.interfaces import IScopedSession
 
-def session_factory(name=u''):
+
+def session_factory(name=''):
     """This is used by scoped session to create a new Session object.
 
     It delegates to a IScopedSession utility.
@@ -12,7 +13,7 @@ def session_factory(name=u''):
     return utility.sessionFactory()
 
 
-def scopefunc(name=u''):
+def scopefunc(name=''):
     """This is used by scoped session to distinguish between sessions.
 
     It delegates to a IScopedSession utility.
@@ -26,7 +27,7 @@ def scopefunc(name=u''):
 
 Session = scoped_session(session_factory, scopefunc)
 
-_named_scoped_sessions = {u'': Session}
+_named_scoped_sessions = {'': Session}
 
 
 def named_scoped_session(name):

@@ -1,6 +1,6 @@
 from zope.interface import Attribute
-from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import implementer
 
 
 class IScopedSession(Interface):
@@ -79,7 +79,7 @@ class IEngineCreatedEvent(Interface):
 
 
 @implementer(IEngineCreatedEvent)
-class EngineCreatedEvent(object):
+class EngineCreatedEvent:
 
     def __init__(self, engine, engine_args, engine_kw):
         self.engine = engine

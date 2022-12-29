@@ -1,8 +1,12 @@
 z3c.saconfig
 ************
 
-0.16.1 (unreleased)
-===================
+1.0 (unreleased)
+================
+
+- Add support for Python 3.10, 3.11.
+
+- Drop support for Python 2.7, 3.5, 3.6.
 
 - Added support for Python 3.9 [icemac]
 

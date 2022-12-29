@@ -1,25 +1,20 @@
 """
 Some reusable, standard implementations of IScopedSession.
 """
-from z3c.saconfig.interfaces import EngineCreatedEvent
-from z3c.saconfig.interfaces import IEngineFactory
-from z3c.saconfig.interfaces import IScopedSession
-from z3c.saconfig.interfaces import ISiteScopedSession
+import threading
+import time
+from threading import get_ident
+
+import sqlalchemy
 from zope import component
 from zope.event import notify
 from zope.interface import implementer
 from zope.sqlalchemy import register
 
-
-import sqlalchemy
-import threading
-import time
-
-
-try:
-    from threading import get_ident
-except ImportError:
-    from thread import get_ident
+from z3c.saconfig.interfaces import EngineCreatedEvent
+from z3c.saconfig.interfaces import IEngineFactory
+from z3c.saconfig.interfaces import IScopedSession
+from z3c.saconfig.interfaces import ISiteScopedSession
 
 
 SESSION_DEFAULTS = dict(
@@ -29,7 +24,7 @@ SESSION_DEFAULTS = dict(
 
 
 @implementer(IScopedSession)
-class GloballyScopedSession(object):
+class GloballyScopedSession:
     """A globally scoped session.
 
     Register this as a global utility to have just one kind of session
@@ -41,7 +36,7 @@ class GloballyScopedSession(object):
     to pass the right arguments to the superclasses __init__.
     """
 
-    def __init__(self, engine=u'', **kw):
+    def __init__(self, engine='', **kw):
         """Pass keywords arguments for sqlalchemy.orm.create_session.
 
         The `engine` argument is the name of a utility implementing
@@ -86,7 +81,7 @@ def _zope_session_defaults(kw):
 
 
 @implementer(ISiteScopedSession)
-class SiteScopedSession(object):
+class SiteScopedSession:
     """A session that is scoped per site.
 
     Even though this makes the sessions scoped per site,
@@ -97,7 +92,7 @@ class SiteScopedSession(object):
     a SiteScopedSession utility without passing parameters to its constructor.
     """
 
-    def __init__(self, engine=u'', **kw):
+    def __init__(self, engine='', **kw):
         assert 'bind' not in kw
         self.engine = engine
         self.kw = _zope_session_defaults(kw)
@@ -128,7 +123,7 @@ _ENGINES_LOCK = threading.Lock()
 
 
 @implementer(IEngineFactory)
-class EngineFactory(object):
+class EngineFactory:
     """An engine factory.
 
     If you need engine connection parameters to be different per site,
