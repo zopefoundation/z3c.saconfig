@@ -79,7 +79,7 @@ class IEngineCreatedEvent(Interface):
 
 
 @implementer(IEngineCreatedEvent)
-class EngineCreatedEvent(object):
+class EngineCreatedEvent:
 
     def __init__(self, engine, engine_args, engine_kw):
         self.engine = engine

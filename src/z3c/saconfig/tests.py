@@ -53,7 +53,7 @@ def tearDownReadMe(test):
 _site = None
 
 
-class DummySite(object):
+class DummySite:
     def __init__(self, id):
         self.id = id
         self._sm = SiteManager()
@@ -64,7 +64,7 @@ class DummySite(object):
 
 class SiteManager(registry.Components):
     def __init__(self):
-        super(SiteManager, self).__init__()
+        super().__init__()
         self.__bases__ = (component.getGlobalSiteManager(),)
 
 
@@ -107,7 +107,7 @@ addCleanUp(resetHooks)
 
 
 def engine_subscriber(engine):
-    print('got: {0!s} '.format(engine))
+    print(f'got: {engine!s} ')
 
 
 def test_suite():
