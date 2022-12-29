@@ -1,6 +1,7 @@
 from sqlalchemy.orm import scoped_session
-from z3c.saconfig.interfaces import IScopedSession
 from zope import component
+
+from z3c.saconfig.interfaces import IScopedSession
 
 
 def session_factory(name=u''):

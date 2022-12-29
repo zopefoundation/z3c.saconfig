@@ -1,11 +1,11 @@
-from .interfaces import IEngineFactory
-from .interfaces import IScopedSession
-from .utility import EngineFactory
-from zope.configuration.name import resolve
-
 import zope.component.zcml
 import zope.interface
 import zope.schema
+from zope.configuration.name import resolve
+
+from .interfaces import IEngineFactory
+from .interfaces import IScopedSession
+from .utility import EngineFactory
 
 
 try:

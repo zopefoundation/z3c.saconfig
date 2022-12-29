@@ -1,6 +1,6 @@
 from zope.interface import Attribute
-from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import implementer
 
 
 class IScopedSession(Interface):

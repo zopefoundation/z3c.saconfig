@@ -7,6 +7,11 @@
 # Since the test exercise what happens with two different DSNs
 # locally, you need to also set up a different TEST_DSN2.
 
+import doctest
+import os
+import unittest
+
+import zope.component.eventtesting
 # To test in twophase commit mode export TEST_TWOPHASE=True
 #
 # NOTE: The sqlite that ships with Mac OS X 10.4 is buggy.
@@ -15,11 +20,6 @@ from zope import component
 from zope.interface import registry
 from zope.testing import cleanup
 from zope.testing.cleanup import addCleanUp
-
-import doctest
-import os
-import unittest
-import zope.component.eventtesting
 
 
 TEST_TWOPHASE = bool(os.environ.get('TEST_TWOPHASE'))

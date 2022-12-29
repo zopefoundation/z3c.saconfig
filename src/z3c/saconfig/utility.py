@@ -1,19 +1,19 @@
 """
 Some reusable, standard implementations of IScopedSession.
 """
-from z3c.saconfig.interfaces import EngineCreatedEvent
-from z3c.saconfig.interfaces import IEngineFactory
-from z3c.saconfig.interfaces import IScopedSession
-from z3c.saconfig.interfaces import ISiteScopedSession
+import threading
+import time
+
+import sqlalchemy
 from zope import component
 from zope.event import notify
 from zope.interface import implementer
 from zope.sqlalchemy import register
 
-
-import sqlalchemy
-import threading
-import time
+from z3c.saconfig.interfaces import EngineCreatedEvent
+from z3c.saconfig.interfaces import IEngineFactory
+from z3c.saconfig.interfaces import IScopedSession
+from z3c.saconfig.interfaces import ISiteScopedSession
 
 
 try:
