@@ -109,7 +109,7 @@ def engine(_context, url, name="", convert_unicode=False,
            pool_size=None, max_overflow=None, pool_recycle=None,
            pool_timeout=None):
 
-    if convert_unicode:
+    if convert_unicode:  # pragma: no cover
         warnings.warn(
             '`convert_unicode` is no longer suported by SQLAlchemy, so it is'
             ' ignored here.', DeprecationWarning)
