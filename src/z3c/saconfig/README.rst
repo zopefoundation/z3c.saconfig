@@ -28,15 +28,15 @@ We use the SQLAlchemy ``sqlalchemy.ext.declarative`` extension to
 define some tables and classes::
 
   >>> from sqlalchemy import *
-  >>> from sqlalchemy.ext.declarative import declarative_base
-  >>> from sqlalchemy.orm import relation
+  >>> from sqlalchemy.orm import declarative_base
+  >>> from sqlalchemy.orm import relationship
 
   >>> Base = declarative_base()
   >>> class User(Base):
   ...     __tablename__ = 'test_users'
   ...     id = Column('id', Integer, primary_key=True)
   ...     name = Column('name', String(50))
-  ...     addresses = relation("Address", backref="user")
+  ...     addresses = relationship("Address", backref="user")
   >>> class Address(Base):
   ...     __tablename__ = 'test_addresses'
   ...     id = Column('id', Integer, primary_key=True)
@@ -370,7 +370,7 @@ It's also possible to specify connection pooling options:
   ... </configure>"""))
 
   >>> engineFactory = component.getUtility(IEngineFactory, name="dummy")
-  >>> engineFactory._kw == {'convert_unicode': False, 'echo': None, 'pool_size': 1, 'max_overflow': 2, 'pool_recycle': 3, 'pool_timeout': 4}
+  >>> engineFactory._kw == {'echo': None, 'pool_size': 1, 'max_overflow': 2, 'pool_recycle': 3, 'pool_timeout': 4}
   True
 
 (See the SQLAlchemy documentation on connection pooling for details on how
