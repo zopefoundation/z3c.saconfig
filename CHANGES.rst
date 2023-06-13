@@ -4,11 +4,15 @@ z3c.saconfig
 1.0 (unreleased)
 ================
 
-- Add support for Python 3.10, 3.11.
+- Add support for Python 3.9, 3.10, 3.11.
 
 - Drop support for Python 2.7, 3.5, 3.6.
 
-- Added support for Python 3.9 [icemac]
+- Update tests to run with SQLAlchemy 2. (There are no guaranties that they
+  still run with older versions.)
+
+- Ignore ``convert_unicode`` parameter in ZCML ``engine`` directive, as it is
+  no longer supported by SQLAlchemy 2.
 
 
 0.16.0 (2020-04-03)

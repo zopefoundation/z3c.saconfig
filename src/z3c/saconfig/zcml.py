@@ -1,3 +1,5 @@
+import warnings
+
 import zope.component.zcml
 import zope.interface
 import zope.schema
@@ -107,9 +109,13 @@ def engine(_context, url, name="", convert_unicode=False,
            pool_size=None, max_overflow=None, pool_recycle=None,
            pool_timeout=None):
 
+    if convert_unicode:  # pragma: no cover
+        warnings.warn(
+            '`convert_unicode` is no longer suported by SQLAlchemy, so it is'
+            ' ignored here.', DeprecationWarning)
+
     kwargs = {
         'echo': echo,
-        'convert_unicode': convert_unicode,
     }
 
     # Only add these if they're actually set, since we want to let SQLAlchemy
