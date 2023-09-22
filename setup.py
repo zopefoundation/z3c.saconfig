@@ -44,8 +44,8 @@ setup(name='z3c.saconfig',
       namespace_packages=['z3c'],
       include_package_data=True,
       zip_safe=False,
+      python_requires='>=3.7',
       install_requires=[
-          # -*- Extra requirements: -*-
           'setuptools',
           'zope.sqlalchemy>=0.5',
           'zope.interface',
