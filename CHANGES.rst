@@ -8,6 +8,8 @@ z3c.saconfig
 
 - Drop support for Python 3.7 and 3.8.
 
+- Replace ``pkg_resources`` namespace with PEP 420 native namespace.
+
 
 1.0 (2023-06-13)
 ================
