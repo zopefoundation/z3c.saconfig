@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-2.0 (unreleased)
+2.0 (2025-06-24)
 ================
 
 - Add support for Python 3.12, and 3.13.
