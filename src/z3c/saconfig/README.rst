@@ -355,7 +355,7 @@ This time with a setup call.
   ...   <engine name="dummy2" url="sqlite:///:memory:"
   ...           setup="z3c.saconfig.tests.engine_subscriber" />
   ... </configure>"""))
-  got: Engine(sqlite:///:memory:)
+  got: Engine(sqlite:///%3Amemory%3A)
 
 It's also possible to specify connection pooling options:
 

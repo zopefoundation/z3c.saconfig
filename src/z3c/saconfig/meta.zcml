@@ -3,7 +3,7 @@
            i18n_domain="z3c.saconfig">
 
   <include package="zope.component" file="meta.zcml" />
-  
+
   <meta:directives namespace="http://namespaces.zope.org/db">
 
     <meta:directive
