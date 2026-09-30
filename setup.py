@@ -50,9 +50,6 @@ setup(name='z3c.saconfig',
           'zope.event',
           'zope.configuration',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       extras_require=dict(
           test=['zope.testing'],
       ),
