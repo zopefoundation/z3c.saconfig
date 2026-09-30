@@ -105,7 +105,7 @@ use case.
 After the ``IScopedSession`` utility is registered, one can import the
 ``Session`` class from z3c.saconfig.  This ``Session`` class is like
 the one you'd produce with ``sessionmaker`` from
-SQLAlchemy. `z3c.saconfig.Session`` is intended to be the only
+SQLAlchemy. ``z3c.saconfig.Session`` is intended to be the only
 ``Session`` class you'll ever need, as all configuration and Zope
 integration is done automatically for you by ``z3c.saconfig``,
 appropriate the context in Zope where you use it. There is no need to
