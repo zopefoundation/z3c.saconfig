@@ -53,6 +53,10 @@ keywords = [
     "component",
     "integration",
 ]
+[project.optional-dependencies]
+test =[
+    'zope.testing',
+]
 
 [project.urls]
 Source = "https://github.com/zopefoundation/z3c.saconfig/"
@@ -89,4 +93,3 @@ upload-pypi = false
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.rst", "CHANGES.rst", "src/z3c/saconfig/README.rst"]}
-
