@@ -8,5 +8,3 @@ z3c.saconfig credits
 * Brian Sutherland (various contributions)
 
 * Laurence Rowe, Martin Aspeli, Michael Bayer (useful design discussions)
-
-
