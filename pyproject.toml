@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "z3c.saconfig"
-version = "2.1.dev0"
+version = "2.1"
 description = "Minimal SQLAlchemy ORM session configuration for Zope"
 license = "ZPL-2.1"
 classifiers = [

@@ -1,7 +1,7 @@
 z3c.saconfig
 ************
 
-2.1 (unreleased)
+2.1 (2026-10-06)
 ================
 
 - Move package metadata from setup.py to pyproject.toml.
