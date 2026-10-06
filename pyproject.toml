@@ -1,12 +1,67 @@
-# Generated from:
-# https://github.com/zopefoundation/meta/tree/master/config/pure-python
-
+# Generated with zope.meta (https://zopemeta.readthedocs.io/) from:
+# https://github.com/zopefoundation/meta/tree/master/src/zope/meta/pure-python
 [build-system]
 requires = [
-    "setuptools == 78.1.1",
+    "setuptools >= 78.1.1,< 82",
     "wheel",
 ]
 build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "z3c.saconfig"
+version = "2.1.dev0"
+description = "Minimal SQLAlchemy ORM session configuration for Zope"
+license = "ZPL-2.1"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Zope :: 3",
+    "Framework :: Zope :: 4",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Database",
+]
+dynamic = ["readme"]
+requires-python = ">=3.11"
+authors = [
+    {name = "Martijn Faassen",email = "faassen@startifact.com"},
+]
+maintainers = [
+    {name = "Plone Foundation and contributors",email = "zope-dev@zope.dev"},
+]
+dependencies = [
+    "zope.sqlalchemy>=0.5",
+    "zope.interface",
+    "zope.component",
+    "zope.hookable",
+    "zope.security",
+    "zope.event",
+    "zope.configuration",
+]
+keywords = [
+    "zope",
+    "relational",
+    "sqlalchemy",
+    "component",
+    "integration",
+]
+[project.optional-dependencies]
+test =[
+    'zope.testing',
+]
+
+[project.urls]
+Source = "https://github.com/zopefoundation/z3c.saconfig/"
+Issues = "https://github.com/zopefoundation/z3c.saconfig/issues"
+Changelog = "https://raw.githubusercontent.com/zopefoundation/z3c.saconfig/master/CHANGES.rst"
 
 [tool.coverage.run]
 branch = true
@@ -30,3 +85,11 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "parts/htmlcov"
+
+[tool.zest-releaser]
+create-wheel = false
+extra-message = ""
+upload-pypi = false
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst", "CHANGES.rst", "src/z3c/saconfig/README.rst"]}

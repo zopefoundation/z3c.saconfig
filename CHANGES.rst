@@ -4,7 +4,11 @@ z3c.saconfig
 2.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- Move package metadata from setup.py to pyproject.toml.
+
+- Drop support for Python 3.9 and 3.10.
+
+- Add support for Python 3.14.
 
 
 2.0 (2025-06-24)
