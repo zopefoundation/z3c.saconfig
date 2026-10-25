@@ -4,7 +4,7 @@ z3c.saconfig
 2.2 (unreleased)
 ================
 
-- Nothing changed yet.
+- Add support for Python 3.15.
 
 
 2.1 (2026-10-06)
